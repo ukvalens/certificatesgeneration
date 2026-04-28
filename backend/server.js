@@ -16,6 +16,10 @@ app.get('/', (req, res) => {
   res.json({ message: 'Certificate System API' });
 });
 
+app.get('/api', (req, res) => {
+  res.json({ message: 'Certificate System API' });
+});
+
 // Global error handler
 app.use((err, req, res, next) => {
   console.error(err);
@@ -24,10 +28,17 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-createTables().then(() => {
+// Initialize DB tables on startup
+createTables().catch(err => {
+  console.error('Database initialization failed:', err.message);
+});
+
+// For local development
+if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
-}).catch(err => {
-  console.error('Database initialization failed:', err);
-});
+}
+
+// Export for Vercel serverless
+module.exports = app;
