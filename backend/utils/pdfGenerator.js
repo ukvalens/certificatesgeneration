@@ -1,6 +1,7 @@
 const PDFDocument = require('pdfkit');
 const QRCode = require('qrcode');
 const { v4: uuidv4 } = require('uuid');
+const path = require('path');
 
 const generateCertificateCode = () => {
   return `CERT-${uuidv4().split('-')[0].toUpperCase()}`;
@@ -12,7 +13,12 @@ const generateQRCode = async (data) => {
 
 const generatePDF = async (certificateData) => {
   return new Promise((resolve, reject) => {
-    const doc = new PDFDocument({ size: 'A4', layout: 'landscape' });
+    const doc = new PDFDocument({
+      size: 'A4',
+      layout: 'landscape',
+      bufferPages: true,
+      font: 'Helvetica',
+    });
     const chunks = [];
 
     doc.on('data', (chunk) => chunks.push(chunk));
@@ -23,19 +29,19 @@ const generatePDF = async (certificateData) => {
     doc.rect(30, 30, doc.page.width - 60, doc.page.height - 60).stroke('#1e3a8a');
     doc.rect(35, 35, doc.page.width - 70, doc.page.height - 70).stroke('#1e3a8a');
 
-    doc.fontSize(40).fillColor('#1e3a8a').font('Helvetica-Bold')
+    doc.fontSize(40).fillColor('#1e3a8a')
        .text('CERTIFICATE', 0, 100, { align: 'center' });
 
     doc.fontSize(16).fillColor('#333')
        .text('This is to certify that', 0, 180, { align: 'center' });
 
-    doc.fontSize(32).fillColor('#1e3a8a').font('Helvetica-Bold')
+    doc.fontSize(32).fillColor('#1e3a8a')
        .text(certificateData.user_name, 0, 220, { align: 'center' });
 
-    doc.fontSize(16).fillColor('#333').font('Helvetica')
+    doc.fontSize(16).fillColor('#333')
        .text('has successfully completed', 0, 280, { align: 'center' });
 
-    doc.fontSize(24).fillColor('#1e3a8a').font('Helvetica-Bold')
+    doc.fontSize(24).fillColor('#1e3a8a')
        .text(certificateData.certificate_type, 0, 320, { align: 'center' });
 
     if (certificateData.category) {
@@ -50,8 +56,12 @@ const generatePDF = async (certificateData) => {
        .text(`Certificate Code: ${certificateData.certificate_code}`, 0, 450, { align: 'center' });
 
     if (certificateData.qr_code) {
-      const qrImage = Buffer.from(certificateData.qr_code.split(',')[1], 'base64');
-      doc.image(qrImage, doc.page.width - 130, doc.page.height - 130, { width: 80 });
+      try {
+        const qrImage = Buffer.from(certificateData.qr_code.split(',')[1], 'base64');
+        doc.image(qrImage, doc.page.width - 130, doc.page.height - 130, { width: 80 });
+      } catch (e) {
+        console.error('QR image error:', e.message);
+      }
     }
 
     doc.end();
