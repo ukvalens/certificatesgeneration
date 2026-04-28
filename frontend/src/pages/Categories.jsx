@@ -12,8 +12,10 @@ export default function Categories() {
   useEffect(() => { load(); }, []);
 
   const handleAdd = () => {
-    if (!name.trim()) return;
-    createCategory({ name }).then(() => { setName(''); load(); });
+    if (!name.trim()) return alert('Category name is required');
+    createCategory({ name: name.trim() })
+      .then(() => { setName(''); load(); })
+      .catch(err => alert(err.response?.data?.error || 'Failed to add category'));
   };
 
   const handleEditSave = (id) => {

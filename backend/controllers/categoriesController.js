@@ -8,11 +8,16 @@ const getAll = async (req, res) => {
 const create = async (req, res) => {
   const { name } = req.body;
   if (!name) return res.status(400).json({ error: 'Name is required' });
-  const result = await pool.query(
-    'INSERT INTO categories (name) VALUES ($1) RETURNING *',
-    [name]
-  );
-  res.status(201).json(result.rows[0]);
+  try {
+    const result = await pool.query(
+      'INSERT INTO categories (name) VALUES ($1) RETURNING *',
+      [name]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    if (err.code === '23505') return res.status(400).json({ error: 'Category already exists' });
+    throw err;
+  }
 };
 
 const update = async (req, res) => {

@@ -16,6 +16,12 @@ app.get('/', (req, res) => {
   res.json({ message: 'Certificate System API' });
 });
 
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: err.message || 'Internal server error' });
+});
+
 const PORT = process.env.PORT || 5000;
 
 createTables().then(() => {
