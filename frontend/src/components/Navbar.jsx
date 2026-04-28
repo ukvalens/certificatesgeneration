@@ -6,27 +6,29 @@ export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
+  const brand = <><i className="fa-solid fa-graduation-cap" style={{ marginRight: 8 }}></i>CertSystem</>;
+
   const adminLinks = [
-    { to: '/dashboard', label: 'Dashboard' },
-    { to: '/certificates', label: 'Certificates' },
-    { to: '/certificate-types', label: 'Types' },
-    { to: '/categories', label: 'Categories' },
-    { to: '/verify', label: 'Verify' },
+    { to: '/dashboard', label: 'Dashboard', icon: 'fa-gauge' },
+    { to: '/certificates', label: 'Certificates', icon: 'fa-certificate' },
+    { to: '/certificate-types', label: 'Types', icon: 'fa-list' },
+    { to: '/categories', label: 'Categories', icon: 'fa-folder-tree' },
+    { to: '/verify', label: 'Verify', icon: 'fa-magnifying-glass' },
   ];
 
   const issuerLinks = [
-    { to: '/dashboard', label: 'Dashboard' },
-    { to: '/verify', label: 'Verify' },
+    { to: '/dashboard', label: 'Dashboard', icon: 'fa-gauge' },
+    { to: '/verify', label: 'Verify', icon: 'fa-magnifying-glass' },
   ];
 
   const recipientLinks = [
-    { to: '/dashboard', label: 'My Certificates' },
-    { to: '/verify', label: 'Verify' },
+    { to: '/dashboard', label: 'My Certificates', icon: 'fa-medal' },
+    { to: '/verify', label: 'Verify', icon: 'fa-magnifying-glass' },
   ];
 
   const publicLinks = [
-    { to: '/', label: 'Home' },
-    { to: '/verify', label: 'Verify' },
+    { to: '/', label: 'Home', icon: 'fa-house' },
+    { to: '/verify', label: 'Verify', icon: 'fa-magnifying-glass' },
   ];
 
   const links = !user ? publicLinks
@@ -38,11 +40,11 @@ export default function Navbar() {
 
   return (
     <nav style={styles.nav}>
-      <Link to="/" style={styles.brand}>🎓 CertSystem</Link>
+      <Link to="/" style={styles.brand}>{brand}</Link>
       <div style={styles.links}>
         {links.map(l => (
           <Link key={l.to} to={l.to} style={{ ...styles.link, ...(pathname === l.to ? styles.active : {}) }}>
-            {l.label}
+            <i className={`fa-solid ${l.icon}`} style={{ marginRight: 6 }}></i>{l.label}
           </Link>
         ))}
       </div>
@@ -50,12 +52,12 @@ export default function Navbar() {
         {user ? (
           <>
             <span style={styles.userInfo}>{user.name} <span style={styles.roleBadge}>{user.role}</span></span>
-            <button onClick={handleLogout} style={styles.logoutBtn}>Logout</button>
+            <button onClick={handleLogout} style={styles.logoutBtn}><i className="fa-solid fa-right-from-bracket" style={{ marginRight: 6 }}></i>Logout</button>
           </>
         ) : (
           <>
-            <Link to="/login" style={styles.link}>Login</Link>
-            <Link to="/register" style={styles.registerBtn}>Register</Link>
+            <Link to="/login" style={styles.link}><i className="fa-solid fa-right-to-bracket" style={{ marginRight: 6 }}></i>Login</Link>
+            <Link to="/register" style={styles.registerBtn}><i className="fa-solid fa-user-plus" style={{ marginRight: 6 }}></i>Register</Link>
           </>
         )}
       </div>
