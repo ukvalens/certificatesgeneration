@@ -34,7 +34,7 @@ export default function RecipientDashboard() {
       ) : (
         <>
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search certificates..." style={styles.search} />
-          <div style={styles.grid}>
+          <div className="card-grid" style={styles.grid}>
             {filtered.map(c => (
               <div key={c.id} style={styles.card}>
                 <div style={styles.cardIcon}>🎓</div>

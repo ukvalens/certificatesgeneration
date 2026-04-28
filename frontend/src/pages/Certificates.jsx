@@ -56,7 +56,7 @@ export default function Certificates() {
     <DashboardLayout title="Certificates">
       <div style={styles.card}>
         <h2 style={styles.subtitle}>Issue New Certificate</h2>
-        <div style={styles.form}>
+        <div className="form-grid" style={styles.form}>
           <input value={form.user_name} onChange={e => setForm({ ...form, user_name: e.target.value })} placeholder="Recipient Name *" style={styles.input} />
           <input value={form.header_text} onChange={e => setForm({ ...form, header_text: e.target.value })} placeholder="Certificate title (optional)" style={styles.input} />
           <input value={form.organization} onChange={e => setForm({ ...form, organization: e.target.value })} placeholder="Organization" style={styles.input} />
@@ -71,12 +71,13 @@ export default function Certificates() {
         </div>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '24px 0 12px' }}>
+      <div className="responsive-toolbar" style={{ margin: '24px 0 12px' }}>
         <h2 style={styles.subtitle}>Issued Certificates</h2>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by name or code..." style={{ ...styles.input, maxWidth: 280 }} />
       </div>
 
-      <table style={styles.table}>
+      <div className="table-responsive">
+        <table style={styles.table}>
         <thead>
           <tr>{['Name', 'Email', 'Type', 'Category', 'Code', 'Date', 'Actions'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
         </thead>
@@ -114,6 +115,7 @@ export default function Certificates() {
           ))}
         </tbody>
       </table>
+      </div>
     </DashboardLayout>
   );
 }
@@ -121,7 +123,7 @@ export default function Certificates() {
 const styles = {
   subtitle: { fontSize: 18, color: colors.dark, marginBottom: 12 },
   card: { background: colors.surface, borderRadius: 10, padding: 24, boxShadow: shadows.panel, marginBottom: 8 },
-  form: { display: 'flex', gap: 12, flexWrap: 'wrap' },
+  form: { gap: 12 },
   input: { flex: 1, minWidth: 160, padding: '10px 14px', border: `1px solid ${colors.border}`, borderRadius: 6, fontSize: 14, color: colors.dark },
   textarea: { flex: 1, minWidth: 160, minHeight: 90, padding: '10px 14px', border: `1px solid ${colors.border}`, borderRadius: 6, fontSize: 14, resize: 'vertical', color: colors.dark },
   inlineInput: { width: '100%', padding: '6px 10px', border: `1px solid ${colors.primary}`, borderRadius: 4, fontSize: 13 },

@@ -27,12 +27,12 @@ export default function Login() {
   };
 
   return (
-    <div style={styles.page}>
-      <div style={styles.box}>
+    <div className="page-center" style={styles.page}>
+      <div className="auth-box" style={styles.box}>
         <h1 style={styles.title}>🎓 Welcome Back</h1>
         <p style={styles.sub}>Sign in to your account</p>
         {error && <div style={styles.error}>{error}</div>}
-        <form onSubmit={handleSubmit}>
+        <form className="auth-form" onSubmit={handleSubmit}>
           <input style={styles.input} type="email" placeholder="Email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required />
           <input style={styles.input} type="password" placeholder="Password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} required />
           <button style={styles.btn} type="submit" disabled={loading}>{loading ? 'Signing in...' : 'Sign In'}</button>

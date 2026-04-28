@@ -31,9 +31,9 @@ export default function DashboardLayout({ children, title }) {
   const handleLogout = () => { logout(); navigate('/'); };
 
   return (
-    <div style={styles.root}>
+    <div className="dashboard-root" style={styles.root}>
       {/* Sidebar */}
-      <aside style={{ ...styles.sidebar, width: collapsed ? 64 : 220 }}>
+      <aside className="dashboard-sidebar" style={{ ...styles.sidebar, width: collapsed ? 64 : 220 }}>
         <div style={styles.sidebarTop}>
           <span style={styles.logo}>{collapsed ? '🎓' : '🎓 CertSystem'}</span>
           <button onClick={() => setCollapsed(!collapsed)} style={styles.collapseBtn}>{collapsed ? '→' : '←'}</button>
@@ -61,12 +61,12 @@ export default function DashboardLayout({ children, title }) {
       {/* Main area */}
       <div style={styles.main}>
         {/* Topbar */}
-        <header style={styles.topbar}>
+        <header className="dashboard-topbar" style={styles.topbar}>
           <div>
             <span style={styles.greeting}>👋 Hello, {user?.name}</span>
             <span style={styles.date}>{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
           </div>
-          <div style={styles.topRight}>
+          <div className="dashboard-top-right" style={styles.topRight}>
             <div style={styles.avatar}>{user?.name?.[0]?.toUpperCase()}</div>
             <div style={styles.userInfo}>
               <span style={styles.userName}>{user?.name}</span>
@@ -77,7 +77,7 @@ export default function DashboardLayout({ children, title }) {
         </header>
 
         {/* Body */}
-        <main style={styles.body}>
+        <main className="dashboard-body" style={styles.body}>
           {title && <h1 style={styles.pageTitle}>{title}</h1>}
           {children}
         </main>

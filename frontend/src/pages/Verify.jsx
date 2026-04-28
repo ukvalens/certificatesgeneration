@@ -24,11 +24,11 @@ export default function Verify() {
   };
 
   return (
-    <div style={styles.page}>
-      <div style={styles.box}>
+    <div className="page-center" style={styles.page}>
+      <div className="auth-box" style={styles.box}>
         <h1 style={styles.title}>🔍 Verify Certificate</h1>
         <p style={styles.desc}>Enter a certificate code or scan a QR code to verify authenticity.</p>
-        <div style={styles.form}>
+        <div className="verify-form" style={styles.form}>
           <input
             value={code}
             onChange={e => setCode(e.target.value)}

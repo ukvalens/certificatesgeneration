@@ -1,5 +1,6 @@
 const pool = require('../db');
 const { generateCertificateCode, generateQRCode, generatePDF } = require('../utils/pdfGenerator');
+const { sendMail } = require('../utils/mailer');
 
 const getAll = async (req, res) => {
   const result = await pool.query(`
@@ -53,7 +54,58 @@ const create = async (req, res) => {
      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
     [user_name, email || null, organization || null, description || null, header_text || null, certificate_type_id, issue_date || new Date(), certificate_code, qr_code]
   );
-  res.status(201).json(result.rows[0]);
+
+  const certificate = result.rows[0];
+  const certificateDetails = await pool.query(`
+    SELECT c.*, ct.name AS certificate_type, cat.name AS category
+    FROM certificates c
+    LEFT JOIN certificate_types ct ON c.certificate_type_id = ct.id
+    LEFT JOIN categories cat ON ct.category_id = cat.id
+    WHERE c.id = $1
+  `, [certificate.id]);
+
+  const certificateWithDetails = certificateDetails.rows[0] || certificate;
+
+  if (email) {
+    const userResult = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
+    if (userResult.rows.length) {
+      try {
+        const pdfBuffer = await generatePDF({
+          user_name: certificateWithDetails.user_name,
+          certificate_type: certificateWithDetails.certificate_type,
+          category: certificateWithDetails.category,
+          organization: certificateWithDetails.organization,
+          description: certificateWithDetails.description,
+          header_text: certificateWithDetails.header_text,
+          issue_date: new Date(certificateWithDetails.issue_date).toLocaleDateString(),
+          certificate_code: certificateWithDetails.certificate_code,
+          qr_code: certificateWithDetails.qr_code,
+        });
+
+        await sendMail({
+          to: email,
+          subject: 'Your issued certificate is ready',
+          text: `Hello ${user_name},\n\nA certificate has been issued for you on ${new Date(certificateWithDetails.issue_date).toLocaleDateString()}. You can verify it here: ${verifyUrl}\n\nThank you.`,
+          html: `
+            <p>Hello ${user_name},</p>
+            <p>A certificate has been issued for you on <strong>${new Date(certificateWithDetails.issue_date).toLocaleDateString()}</strong>.</p>
+            <p>You can verify it here: <a href="${verifyUrl}">${verifyUrl}</a></p>
+            <p>Thank you.</p>
+          `,
+          attachments: [
+            {
+              filename: `certificate-${certificateWithDetails.certificate_code}.pdf`,
+              content: pdfBuffer,
+            },
+          ],
+        });
+      } catch (mailError) {
+        console.error('Failed to send certificate email:', mailError);
+      }
+    }
+  }
+
+  res.status(201).json(certificate);
 };
 
 const download = async (req, res) => {

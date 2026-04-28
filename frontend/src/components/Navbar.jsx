@@ -40,16 +40,16 @@ export default function Navbar() {
   const handleLogout = () => { logout(); navigate('/'); };
 
   return (
-    <nav style={styles.nav}>
+    <nav className="navbar" style={styles.nav}>
       <Link to="/" style={styles.brand}>{brand}</Link>
-      <div style={styles.links}>
+      <div className="nav-links" style={styles.links}>
         {links.map(l => (
           <Link key={l.to} to={l.to} style={{ ...styles.link, ...(pathname === l.to ? styles.active : {}) }}>
             <i className={`fa-solid ${l.icon}`} style={{ marginRight: 6 }}></i>{l.label}
           </Link>
         ))}
       </div>
-      <div style={styles.right}>
+      <div className="navbar-right" style={styles.right}>
         {user ? (
           <>
             <span style={styles.userInfo}>{user.name} <span style={styles.roleBadge}>{user.role}</span></span>

@@ -37,7 +37,7 @@ export default function IssuerDashboard() {
       <div style={styles.card}>
         <h2 style={styles.cardTitle}>Issue New Certificate</h2>
         {success && <div style={styles.success}>{success}</div>}
-        <div style={styles.form}>
+        <div className="responsive-form" style={styles.form}>
           <input value={form.user_name} onChange={e => setForm({ ...form, user_name: e.target.value })} placeholder="Recipient Name *" style={styles.input} />
           <input value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="Recipient Email" style={styles.input} />
           <select value={form.certificate_type_id} onChange={e => setForm({ ...form, certificate_type_id: e.target.value })} style={styles.input}>
@@ -54,7 +54,8 @@ export default function IssuerDashboard() {
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..." style={{ ...styles.input, maxWidth: 260 }} />
       </div>
 
-      <table style={styles.table}>
+      <div className="table-responsive">
+        <table style={styles.table}>
         <thead>
           <tr>{['Name', 'Email', 'Type', 'Category', 'Code', 'Date', 'PDF'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
         </thead>
@@ -72,6 +73,7 @@ export default function IssuerDashboard() {
           ))}
         </tbody>
       </table>
+      </div>
     </DashboardLayout>
   );
 }

@@ -18,13 +18,14 @@ export default function Dashboard() {
 
   return (
     <DashboardLayout title="Admin Overview">
-      <div style={styles.cards}>
+      <div className="card-grid" style={styles.cards}>
         <StatCard label="Total Certificates" value={stats.certificates} color={colors.primary} icon="🎓" />
         <StatCard label="Certificate Types" value={stats.types} color={colors.secondary} icon="📋" />
         <StatCard label="Categories" value={stats.categories} color={colors.dark} icon="🗂️" />
       </div>
       <h2 style={styles.subtitle}>Recent Certificates</h2>
-      <table style={styles.table}>
+      <div className="table-responsive">
+        <table style={styles.table}>
         <thead>
           <tr>{['Name', 'Type', 'Category', 'Code', 'Date'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
         </thead>
@@ -40,6 +41,7 @@ export default function Dashboard() {
           ))}
         </tbody>
       </table>
+      </div>
     </DashboardLayout>
   );
 }

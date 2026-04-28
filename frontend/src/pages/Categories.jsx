@@ -30,11 +30,12 @@ export default function Categories() {
 
   return (
     <DashboardLayout title="Categories">
-      <div style={styles.form}>
+      <div className="responsive-form" style={styles.form}>
         <input value={name} onChange={e => setName(e.target.value)} placeholder="Category name" style={styles.input} />
         <button onClick={handleAdd} style={styles.btn}>Add Category</button>
       </div>
-      <table style={styles.table}>
+      <div className="table-responsive">
+        <table style={styles.table}>
         <thead>
           <tr><th style={styles.th}>ID</th><th style={styles.th}>Name</th><th style={styles.th}>Actions</th></tr>
         </thead>
@@ -62,6 +63,7 @@ export default function Categories() {
           ))}
         </tbody>
       </table>
+      </div>
     </DashboardLayout>
   );
 }

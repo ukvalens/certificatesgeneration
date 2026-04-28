@@ -36,7 +36,7 @@ export default function CertificateTypes() {
 
   return (
     <DashboardLayout title="Certificate Types">
-      <div style={styles.form}>
+      <div className="responsive-form" style={styles.form}>
         <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Type name" style={styles.input} />
         <select value={form.category_id} onChange={e => setForm({ ...form, category_id: e.target.value })} style={styles.input}>
           <option value="">No Category</option>
@@ -45,7 +45,8 @@ export default function CertificateTypes() {
         <input value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Description" style={styles.input} />
         <button onClick={handleAdd} style={styles.btn}>Add Type</button>
       </div>
-      <table style={styles.table}>
+      <div className="table-responsive">
+        <table style={styles.table}>
         <thead>
           <tr><th style={styles.th}>ID</th><th style={styles.th}>Name</th><th style={styles.th}>Category</th><th style={styles.th}>Description</th><th style={styles.th}>Actions</th></tr>
         </thead>
@@ -80,6 +81,7 @@ export default function CertificateTypes() {
           ))}
         </tbody>
       </table>
+      </div>
     </DashboardLayout>
   );
 }

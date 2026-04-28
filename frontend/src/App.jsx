@@ -44,7 +44,7 @@ function Layout() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       {!hideGlobalLayout && <Navbar />}
-      <div style={{ background: colors.light, flex: 1 }}>
+      <div className="app-container" style={{ background: colors.light, flex: 1 }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
