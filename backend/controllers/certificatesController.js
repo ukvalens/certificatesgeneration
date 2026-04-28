@@ -45,7 +45,7 @@ const create = async (req, res) => {
   }
 
   const certificate_code = generateCertificateCode();
-  const verifyUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify/${certificate_code}`;
+  const verifyUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify/${certificate_code}`;
   const qr_code = await generateQRCode(verifyUrl);
 
   const result = await pool.query(

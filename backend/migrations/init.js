@@ -10,7 +10,7 @@ const createTables = async () => {
 
     CREATE TABLE IF NOT EXISTS certificate_types (
       id SERIAL PRIMARY KEY,
-      name VARCHAR(150) NOT NULL UNIQUE,
+      name VARCHAR(150) NOT NULL,
       category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL,
       description TEXT,
       created_at TIMESTAMP DEFAULT NOW()
@@ -26,6 +26,20 @@ const createTables = async () => {
       qr_code TEXT,
       created_at TIMESTAMP DEFAULT NOW()
     );
+  `);
+
+  // Add unique constraint to certificate_types if not exists
+  await pool.query(`
+    DO $$ BEGIN
+      IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint WHERE conname = 'certificate_types_name_key'
+      ) THEN
+        DELETE FROM certificate_types WHERE id NOT IN (
+          SELECT MIN(id) FROM certificate_types GROUP BY name
+        );
+        ALTER TABLE certificate_types ADD CONSTRAINT certificate_types_name_key UNIQUE (name);
+      END IF;
+    END $$;
   `);
 
   await pool.query(`
