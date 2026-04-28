@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import DashboardLayout from './components/DashboardLayout';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -34,25 +35,50 @@ function ProtectedRoute({ children, roles }) {
 
 function Layout() {
   const { pathname } = useLocation();
+  const { user } = useAuth();
   const isDashboard = dashboardPaths.some(p => pathname.startsWith(p));
+  const isVerifyDashboard = pathname.startsWith('/verify') && user;
+  const hideGlobalLayout = isDashboard || isVerifyDashboard;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      {!isDashboard && <Navbar />}
+      {!hideGlobalLayout && <Navbar />}
       <div style={{ background: '#f8fafc', flex: 1 }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/verify" element={<Verify />} />
-          <Route path="/verify/:code" element={<Verify />} />
+          <Route
+            path="/verify"
+            element={
+              user ? (
+                <DashboardLayout title="Verify Certificate">
+                  <Verify />
+                </DashboardLayout>
+              ) : (
+                <Verify />
+              )
+            }
+          />
+          <Route
+            path="/verify/:code"
+            element={
+              user ? (
+                <DashboardLayout title="Verify Certificate">
+                  <Verify />
+                </DashboardLayout>
+              ) : (
+                <Verify />
+              )
+            }
+          />
           <Route path="/dashboard" element={<DashboardRouter />} />
           <Route path="/certificates" element={<ProtectedRoute roles={['admin']}><Certificates /></ProtectedRoute>} />
           <Route path="/certificate-types" element={<ProtectedRoute roles={['admin']}><CertificateTypes /></ProtectedRoute>} />
           <Route path="/categories" element={<ProtectedRoute roles={['admin']}><Categories /></ProtectedRoute>} />
         </Routes>
       </div>
-      {!isDashboard && <Footer />}
+      {!hideGlobalLayout && <Footer />}
     </div>
   );
 }
