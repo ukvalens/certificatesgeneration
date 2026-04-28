@@ -5,7 +5,7 @@ import DashboardLayout from '../components/DashboardLayout';
 export default function Certificates() {
   const [certificates, setCertificates] = useState([]);
   const [types, setTypes] = useState([]);
-  const [form, setForm] = useState({ user_name: '', email: '', certificate_type_id: '', issue_date: '' });
+  const [form, setForm] = useState({ user_name: '', email: '', organization: '', description: '', certificate_type_id: '', issue_date: '' });
   const [search, setSearch] = useState('');
   const [editId, setEditId] = useState(null);
   const [editRow, setEditRow] = useState({});
@@ -20,7 +20,7 @@ export default function Certificates() {
   const handleIssue = () => {
     if (!form.user_name.trim() || !form.certificate_type_id) return alert('Name and type are required');
     createCertificate(form).then(() => {
-      setForm({ user_name: '', email: '', certificate_type_id: '', issue_date: '' });
+      setForm({ user_name: '', email: '', organization: '', description: '', certificate_type_id: '', issue_date: '' });
       load();
     });
   };
@@ -30,6 +30,8 @@ export default function Certificates() {
     setEditRow({
       user_name: c.user_name,
       email: c.email || '',
+      organization: c.organization || '',
+      description: c.description || '',
       certificate_type_id: c.certificate_type_id,
       issue_date: c.issue_date ? c.issue_date.split('T')[0] : '',
     });
@@ -54,7 +56,9 @@ export default function Certificates() {
         <h2 style={styles.subtitle}>Issue New Certificate</h2>
         <div style={styles.form}>
           <input value={form.user_name} onChange={e => setForm({ ...form, user_name: e.target.value })} placeholder="Recipient Name *" style={styles.input} />
+          <input value={form.organization} onChange={e => setForm({ ...form, organization: e.target.value })} placeholder="Organization" style={styles.input} />
           <input value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="Email (optional)" style={styles.input} />
+          <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Certificate description" style={styles.textarea} />
           <select value={form.certificate_type_id} onChange={e => setForm({ ...form, certificate_type_id: e.target.value })} style={styles.input}>
             <option value="">Select Certificate Type *</option>
             {types.map(t => <option key={t.id} value={t.id}>{t.name}{t.category_name ? ` (${t.category_name})` : ''}</option>)}
@@ -116,6 +120,7 @@ const styles = {
   card: { background: '#fff', borderRadius: 10, padding: 24, boxShadow: '0 2px 8px #0001', marginBottom: 8 },
   form: { display: 'flex', gap: 12, flexWrap: 'wrap' },
   input: { flex: 1, minWidth: 160, padding: '10px 14px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 14 },
+  textarea: { flex: 1, minWidth: 160, minHeight: 90, padding: '10px 14px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 14, resize: 'vertical' },
   inlineInput: { width: '100%', padding: '6px 10px', border: '1px solid #93c5fd', borderRadius: 4, fontSize: 13 },
   btn: { background: '#16a34a', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: 6, cursor: 'pointer', fontSize: 14 },
   editBtn: { background: '#d97706', color: '#fff', border: 'none', padding: '5px 10px', borderRadius: 4, cursor: 'pointer', fontSize: 12, marginRight: 6 },

@@ -29,12 +29,19 @@ const createTables = async () => {
       id SERIAL PRIMARY KEY,
       user_name VARCHAR(150) NOT NULL,
       email VARCHAR(150),
+      organization VARCHAR(150),
+      description TEXT,
       certificate_type_id INTEGER REFERENCES certificate_types(id) ON DELETE SET NULL,
       issue_date DATE DEFAULT CURRENT_DATE,
       certificate_code VARCHAR(50) NOT NULL UNIQUE,
       qr_code TEXT,
       created_at TIMESTAMP DEFAULT NOW()
     );
+  `);
+
+  await pool.query(`
+    ALTER TABLE certificates ADD COLUMN IF NOT EXISTS organization VARCHAR(150);
+    ALTER TABLE certificates ADD COLUMN IF NOT EXISTS description TEXT;
   `);
 
   await pool.query(`
