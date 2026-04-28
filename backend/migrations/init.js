@@ -42,23 +42,29 @@ const createTables = async () => {
     END $$;
   `);
 
-  await pool.query(`
-    INSERT INTO categories (name) VALUES
-      ('Networking'),
-      ('Artificial Intelligence'),
-      ('Cloud Computing'),
-      ('Software Development'),
-      ('Cybersecurity')
-    ON CONFLICT (name) DO NOTHING;
-  `);
+  const { rows: catRows } = await pool.query('SELECT COUNT(*) FROM categories');
+  if (parseInt(catRows[0].count) === 0) {
+    await pool.query(`
+      INSERT INTO categories (name) VALUES
+        ('Networking'),
+        ('Artificial Intelligence'),
+        ('Cloud Computing'),
+        ('Software Development'),
+        ('Cybersecurity')
+      ON CONFLICT (name) DO NOTHING;
+    `);
+  }
 
-  await pool.query(`
-    INSERT INTO certificate_types (name, category_id, description) VALUES
-      ('Certificate of Completion', NULL, 'General completion certificate'),
-      ('IT Technical Certificate', (SELECT id FROM categories WHERE name='Networking'), 'IT and networking technical certificate'),
-      ('Digital Online Certificate', (SELECT id FROM categories WHERE name='Software Development'), 'Online digital learning certificate')
-    ON CONFLICT (name) DO NOTHING;
-  `);
+  const { rows } = await pool.query('SELECT COUNT(*) FROM certificate_types');
+  if (parseInt(rows[0].count) === 0) {
+    await pool.query(`
+      INSERT INTO certificate_types (name, category_id, description) VALUES
+        ('Certificate of Completion', NULL, 'General completion certificate'),
+        ('IT Technical Certificate', (SELECT id FROM categories WHERE name='Networking'), 'IT and networking technical certificate'),
+        ('Digital Online Certificate', (SELECT id FROM categories WHERE name='Software Development'), 'Online digital learning certificate')
+      ON CONFLICT (name) DO NOTHING;
+    `);
+  }
 
   console.log('Database tables ready.');
 };
