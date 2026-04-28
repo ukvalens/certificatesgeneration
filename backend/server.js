@@ -8,6 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/auth', require('./routes/auth'));
 app.use('/api/categories', require('./routes/categories'));
 app.use('/api/certificate-types', require('./routes/certificateTypes'));
 app.use('/api/certificates', require('./routes/certificates'));

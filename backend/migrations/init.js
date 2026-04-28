@@ -2,6 +2,15 @@ const pool = require('../db');
 
 const createTables = async () => {
   await pool.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(150) NOT NULL,
+      email VARCHAR(150) NOT NULL UNIQUE,
+      password VARCHAR(255) NOT NULL,
+      role VARCHAR(20) NOT NULL DEFAULT 'recipient' CHECK (role IN ('admin', 'issuer', 'recipient')),
+      created_at TIMESTAMP DEFAULT NOW()
+    );
+
     CREATE TABLE IF NOT EXISTS categories (
       id SERIAL PRIMARY KEY,
       name VARCHAR(100) NOT NULL UNIQUE,
@@ -28,7 +37,6 @@ const createTables = async () => {
     );
   `);
 
-  // Add unique constraint to certificate_types if not exists
   await pool.query(`
     DO $$ BEGIN
       IF NOT EXISTS (
