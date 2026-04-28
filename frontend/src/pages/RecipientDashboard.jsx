@@ -3,6 +3,7 @@ import { getCertificates, downloadCertificate } from '../api';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import DashboardLayout from '../components/DashboardLayout';
+import { colors, shadows } from '../theme';
 
 export default function RecipientDashboard() {
   const { user } = useAuth();
@@ -27,8 +28,8 @@ export default function RecipientDashboard() {
       {certificates.length === 0 ? (
         <div style={styles.empty}>
           <div style={{ fontSize: 48, marginBottom: 16 }}>🎖️</div>
-          <h3 style={{ color: '#1e3a8a', marginBottom: 8 }}>No certificates yet</h3>
-          <p style={{ color: '#64748b' }}>Your issued certificates will appear here once an issuer assigns them to your email.</p>
+          <h3 style={{ color: colors.dark, marginBottom: 8 }}>No certificates yet</h3>
+          <p style={{ color: colors.muted }}>Your issued certificates will appear here once an issuer assigns them to your email.</p>
         </div>
       ) : (
         <>
@@ -58,17 +59,17 @@ export default function RecipientDashboard() {
 }
 
 const styles = {
-  search: { width: '100%', maxWidth: 360, padding: '10px 14px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 14, marginBottom: 24, boxSizing: 'border-box' },
-  empty: { background: '#fff', borderRadius: 12, padding: 60, textAlign: 'center', boxShadow: '0 2px 8px #0001' },
+  search: { width: '100%', maxWidth: 360, padding: '10px 14px', border: `1px solid ${colors.border}`, borderRadius: 6, fontSize: 14, marginBottom: 24, boxSizing: 'border-box', color: colors.dark },
+  empty: { background: colors.surface, borderRadius: 12, padding: 60, textAlign: 'center', boxShadow: shadows.panel },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20 },
-  card: { background: '#fff', borderRadius: 12, padding: 24, boxShadow: '0 2px 12px #0001' },
+  card: { background: colors.surface, borderRadius: 12, padding: 24, boxShadow: shadows.card },
   cardIcon: { fontSize: 36, marginBottom: 8 },
-  cardType: { fontSize: 18, color: '#1e3a8a', marginBottom: 8 },
-  badge: { background: '#eff6ff', color: '#2563eb', padding: '3px 10px', borderRadius: 20, fontSize: 12, display: 'inline-block', marginBottom: 12 },
-  info: { fontSize: 13, color: '#475569', lineHeight: 2, marginBottom: 16 },
-  label: { fontWeight: 600, color: '#1e293b' },
-  code: { background: '#f1f5f9', padding: '2px 6px', borderRadius: 4, fontSize: 12 },
+  cardType: { fontSize: 18, color: colors.dark, marginBottom: 8 },
+  badge: { background: colors.light, color: colors.primary, padding: '3px 10px', borderRadius: 20, fontSize: 12, display: 'inline-block', marginBottom: 12 },
+  info: { fontSize: 13, color: colors.muted, lineHeight: 2, marginBottom: 16 },
+  label: { fontWeight: 600, color: colors.dark },
+  code: { background: colors.light, padding: '2px 6px', borderRadius: 4, fontSize: 12 },
   actions: { display: 'flex', gap: 10 },
-  dlBtn: { background: '#16a34a', color: '#fff', padding: '8px 14px', borderRadius: 6, textDecoration: 'none', fontSize: 13 },
-  verifyLink: { background: '#f1f5f9', color: '#1e3a8a', padding: '8px 14px', borderRadius: 6, textDecoration: 'none', fontSize: 13 },
+  dlBtn: { background: colors.secondary, color: colors.surface, padding: '8px 14px', borderRadius: 6, textDecoration: 'none', fontSize: 13 },
+  verifyLink: { background: colors.light, color: colors.dark, padding: '8px 14px', borderRadius: 6, textDecoration: 'none', fontSize: 13 },
 };

@@ -4,11 +4,11 @@ const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 const CATEGORY_STYLES = {
-  Development: { bg: '#eef2ff', accent: '#3730a3' },
-  Design: { bg: '#fdf2f8', accent: '#9d174d' },
-  Business: { bg: '#fefce8', accent: '#92400e' },
-  Marketing: { bg: '#ecfdf5', accent: '#0f766e' },
-  Default: { bg: '#fbfcff', accent: '#1e40af' },
+  Development: { bg: '#e8f5ff', accent: '#2fa4d7' },
+  Design: { bg: '#fff1e5', accent: '#e76f2e' },
+  Business: { bg: '#f5f1e8', accent: '#3e2c23' },
+  Marketing: { bg: '#f7f0e9', accent: '#e76f2e' },
+  Default: { bg: '#f5e9d8', accent: '#2fa4d7' },
 };
 
 const CATEGORY_HEADERS = {
@@ -31,7 +31,7 @@ const getCategoryStyle = (category) => {
 
   const index = Math.abs(getStringHash(category)) % FALLBACK_ACCENTS.length;
   return {
-    bg: '#f8fafc',
+    bg: '#f5e9d8',
     accent: FALLBACK_ACCENTS[index],
   };
 };
@@ -71,10 +71,16 @@ const generatePDF = async (certificateData) => {
     const headerText = getHeaderText(certificateData.category, certificateData.header_text);
 
     // Background and border
-    doc.rect(0, 0, width, height).fill(categoryStyle.bg);
-    doc.roundedRect(margin, margin, innerWidth, height - margin * 2, 18)
-       .lineWidth(2)
-       .stroke('#cbd5e1');
+    doc.rect(0, 0, width, height).fill('#ffffff');
+    doc.save();
+    doc.lineWidth(3).strokeColor('#000000');
+    doc.rect(8, 8, width - 16, height - 16).stroke();
+    doc.restore();
+
+    doc.save();
+    doc.lineWidth(2).strokeColor(categoryStyle.accent);
+    doc.rect(margin + 8, margin + 8, innerWidth - 16, height - margin * 2 - 16).stroke();
+    doc.restore();
 
     // Top accent bar and title
     doc.rect(margin + 12, margin + 12, innerWidth - 24, 82).fill(categoryStyle.accent);
@@ -82,19 +88,19 @@ const generatePDF = async (certificateData) => {
        .text(headerText, margin + 12, margin + 28, { width: innerWidth - 24, align: 'center' });
 
     // Presented to text
-    doc.fillColor('#475569').fontSize(14).font('Helvetica')
+    doc.fillColor('#3e2c23').fontSize(14).font('Helvetica')
        .text('This is to certify that', margin, margin + 120, { width: innerWidth, align: 'center' });
 
     // Recipient name
-    doc.fillColor('#0f172a').fontSize(44).font('Helvetica-Bold')
+    doc.fillColor('#3e2c23').fontSize(44).font('Helvetica-Bold')
        .text(certificateData.user_name || 'Recipient Name', margin, margin + 150, { width: innerWidth, align: 'center' });
 
     // Achievement line
-    doc.fillColor('#475569').fontSize(16).font('Helvetica')
+    doc.fillColor('#3e2c23').fontSize(16).font('Helvetica')
        .text('has successfully completed', margin, margin + 220, { width: innerWidth, align: 'center' });
 
     // Certificate title
-    doc.fillColor('#1e40af').fontSize(30).font('Helvetica-Bold')
+    doc.fillColor(categoryStyle.accent).fontSize(30).font('Helvetica-Bold')
        .text(certificateData.certificate_type || 'Certificate Type', margin, margin + 250, { width: innerWidth, align: 'center' });
 
     let detailY = margin + 310;

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getCertificates, getCertificateTypes, createCertificate, downloadCertificate } from '../api';
 import DashboardLayout from '../components/DashboardLayout';
+import { colors, shadows } from '../theme';
 
 export default function IssuerDashboard() {
   const [certificates, setCertificates] = useState([]);
@@ -76,15 +77,15 @@ export default function IssuerDashboard() {
 }
 
 const styles = {
-  card: { background: '#fff', borderRadius: 10, padding: 24, boxShadow: '0 2px 8px #0001', marginBottom: 8 },
-  cardTitle: { fontSize: 18, color: '#1e3a8a', marginBottom: 16 },
+  card: { background: colors.surface, borderRadius: 10, padding: 24, boxShadow: shadows.panel, marginBottom: 8 },
+  cardTitle: { fontSize: 18, color: colors.dark, marginBottom: 16 },
   form: { display: 'flex', gap: 12, flexWrap: 'wrap' },
-  input: { flex: 1, minWidth: 160, padding: '10px 14px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 14 },
-  btn: { background: '#16a34a', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: 6, cursor: 'pointer', fontSize: 14 },
-  dlBtn: { background: '#2563eb', color: '#fff', padding: '5px 10px', borderRadius: 4, fontSize: 12, textDecoration: 'none' },
-  success: { background: '#f0fdf4', color: '#16a34a', padding: '10px 14px', borderRadius: 6, marginBottom: 16, fontSize: 14 },
-  code: { background: '#f1f5f9', padding: '2px 6px', borderRadius: 4, fontSize: 12 },
-  table: { width: '100%', borderCollapse: 'collapse', background: '#fff', borderRadius: 10, overflow: 'hidden', boxShadow: '0 2px 8px #0001' },
-  th: { background: '#1e3a8a', color: '#fff', padding: '10px 16px', textAlign: 'left', fontSize: 13 },
-  td: { padding: '10px 16px', borderBottom: '1px solid #f1f5f9', fontSize: 14 },
+  input: { flex: 1, minWidth: 160, padding: '10px 14px', border: `1px solid ${colors.border}`, borderRadius: 6, fontSize: 14, color: colors.dark },
+  btn: { background: colors.secondary, color: colors.surface, border: 'none', padding: '10px 20px', borderRadius: 6, cursor: 'pointer', fontSize: 14 },
+  dlBtn: { background: colors.primary, color: colors.surface, padding: '5px 10px', borderRadius: 4, fontSize: 12, textDecoration: 'none' },
+  success: { background: 'rgba(17, 31, 77, 0.08)', color: colors.primary, padding: '10px 14px', borderRadius: 6, marginBottom: 16, fontSize: 14 },
+  code: { background: colors.light, padding: '2px 6px', borderRadius: 4, fontSize: 12 },
+  table: { width: '100%', borderCollapse: 'collapse', background: colors.surface, borderRadius: 10, overflow: 'hidden', boxShadow: shadows.panel },
+  th: { background: colors.primary, color: colors.surface, padding: '10px 16px', textAlign: 'left', fontSize: 13 },
+  td: { padding: '10px 16px', borderBottom: `1px solid ${colors.light}`, fontSize: 14 },
 };

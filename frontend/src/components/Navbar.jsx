@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { colors } from '../theme';
 
 export default function Navbar() {
   const { pathname } = useLocation();
@@ -66,14 +67,14 @@ export default function Navbar() {
 }
 
 const styles = {
-  nav: { background: '#1e3a8a', padding: '0 24px', display: 'flex', alignItems: 'center', height: 60, gap: 16 },
-  brand: { color: '#fff', fontWeight: 'bold', fontSize: 20, textDecoration: 'none', marginRight: 24, whiteSpace: 'nowrap' },
+  nav: { background: colors.primary, padding: '0 24px', display: 'flex', alignItems: 'center', height: 60, gap: 16 },
+  brand: { color: colors.surface, fontWeight: 'bold', fontSize: 20, textDecoration: 'none', marginRight: 24, whiteSpace: 'nowrap' },
   links: { display: 'flex', gap: 4, flex: 1 },
   right: { display: 'flex', alignItems: 'center', gap: 10, marginLeft: 'auto' },
-  link: { color: '#cbd5e1', textDecoration: 'none', padding: '6px 12px', borderRadius: 6, fontSize: 14, whiteSpace: 'nowrap' },
-  active: { background: '#2563eb', color: '#fff' },
-  registerBtn: { background: '#fff', color: '#1e3a8a', textDecoration: 'none', padding: '6px 14px', borderRadius: 6, fontSize: 14, fontWeight: 'bold' },
-  logoutBtn: { background: '#dc2626', color: '#fff', border: 'none', padding: '6px 14px', borderRadius: 6, cursor: 'pointer', fontSize: 13 },
-  userInfo: { color: '#cbd5e1', fontSize: 13, whiteSpace: 'nowrap' },
-  roleBadge: { background: '#2563eb', color: '#fff', padding: '2px 8px', borderRadius: 10, fontSize: 11, marginLeft: 4 },
+  link: { color: 'rgba(255,255,255,0.8)', textDecoration: 'none', padding: '6px 12px', borderRadius: 6, fontSize: 14, whiteSpace: 'nowrap' },
+  active: { background: colors.secondary, color: colors.surface },
+  registerBtn: { background: colors.surface, color: colors.primary, textDecoration: 'none', padding: '6px 14px', borderRadius: 6, fontSize: 14, fontWeight: 'bold' },
+  logoutBtn: { background: colors.secondary, color: colors.surface, border: 'none', padding: '6px 14px', borderRadius: 6, cursor: 'pointer', fontSize: 13 },
+  userInfo: { color: 'rgba(255,255,255,0.85)', fontSize: 13, whiteSpace: 'nowrap' },
+  roleBadge: { background: colors.secondary, color: colors.surface, padding: '2px 8px', borderRadius: 10, fontSize: 11, marginLeft: 4 },
 };

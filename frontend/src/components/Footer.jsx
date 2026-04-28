@@ -1,3 +1,5 @@
+import { colors } from '../theme';
+
 export default function Footer() {
   return (
     <footer style={styles.footer}>
@@ -22,10 +24,10 @@ export default function Footer() {
 }
 
 const styles = {
-  footer: { background: '#1e3a8a', color: '#cbd5e1', padding: '20px 32px' },
+  footer: { background: colors.primary, color: colors.surface, padding: '20px 32px' },
   inner: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, maxWidth: 1100, margin: '0 auto' },
-  brand: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
-  description: { fontSize: 14, color: '#dbeafe', minWidth: 200, lineHeight: 1.5 },
-  link: { color: '#fff', textDecoration: 'underline', marginLeft: 4 },
+  brand: { color: colors.surface, fontWeight: 'bold', fontSize: 16 },
+  description: { fontSize: 14, color: 'rgba(255,255,255,0.9)', minWidth: 200, lineHeight: 1.5 },
+  link: { color: colors.surface, textDecoration: 'underline', marginLeft: 4 },
   copy: { fontSize: 13 },
 };

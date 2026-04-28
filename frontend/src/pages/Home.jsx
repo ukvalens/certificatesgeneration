@@ -1,3 +1,5 @@
+import { colors } from '../theme';
+
 export default function Home() {
   const features = [
     { icon: 'fa-certificate', title: 'Issue Certificates', desc: 'Dynamically generate certificates with custom types and categories.' },
@@ -28,20 +30,20 @@ export default function Home() {
 }
 
 const styles = {
-  page: { background: '#f8fafc' },
-  hero: { background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)', padding: '80px 32px', textAlign: 'center' },
+  page: { background: colors.light },
+  hero: { background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 100%)`, padding: '80px 32px', textAlign: 'center' },
   heroContent: { maxWidth: 600, margin: '0 auto' },
-  heroIcon: { fontSize: 52, color: '#fff', marginBottom: 16 },
-  heroTitle: { color: '#fff', fontSize: 42, fontWeight: 'bold', marginBottom: 12 },
-  heroSub: { color: '#bfdbfe', fontSize: 17, marginBottom: 32 },
+  heroIcon: { fontSize: 52, color: colors.surface, marginBottom: 16 },
+  heroTitle: { color: colors.surface, fontSize: 42, fontWeight: 'bold', marginBottom: 12 },
+  heroSub: { color: 'rgba(255,255,255,0.85)', fontSize: 17, marginBottom: 32 },
   heroBtns: { display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' },
-  btnPrimary: { background: '#fff', color: '#1e3a8a', padding: '12px 28px', borderRadius: 8, textDecoration: 'none', fontWeight: 'bold', fontSize: 15 },
-  btnOutline: { background: 'transparent', color: '#fff', padding: '12px 28px', borderRadius: 8, textDecoration: 'none', fontWeight: 'bold', fontSize: 15, border: '2px solid #fff' },
+  btnPrimary: { background: colors.surface, color: colors.primary, padding: '12px 28px', borderRadius: 8, textDecoration: 'none', fontWeight: 'bold', fontSize: 15 },
+  btnOutline: { background: 'transparent', color: colors.surface, padding: '12px 28px', borderRadius: 8, textDecoration: 'none', fontWeight: 'bold', fontSize: 15, border: `2px solid ${colors.surface}` },
   section: { padding: '60px 32px', maxWidth: 1100, margin: '0 auto' },
-  sectionTitle: { fontSize: 26, color: '#1e3a8a', textAlign: 'center', marginBottom: 40, fontWeight: 700 },
+  sectionTitle: { fontSize: 26, color: colors.dark, textAlign: 'center', marginBottom: 40, fontWeight: 700 },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 },
-  card: { background: '#fff', borderRadius: 12, padding: 28, boxShadow: '0 2px 12px #0001' },
-  cardIcon: { fontSize: 28, color: '#2563eb', marginBottom: 14 },
-  cardTitle: { fontSize: 17, color: '#1e3a8a', marginBottom: 8, fontWeight: 600 },
-  cardDesc: { color: '#64748b', fontSize: 14, lineHeight: 1.6 },
+  card: { background: colors.surface, borderRadius: 12, padding: 28, boxShadow: '0 2px 12px rgba(0,0,0,0.08)' },
+  cardIcon: { fontSize: 28, color: colors.primary, marginBottom: 14 },
+  cardTitle: { fontSize: 17, color: colors.dark, marginBottom: 8, fontWeight: 600 },
+  cardDesc: { color: colors.muted, fontSize: 14, lineHeight: 1.6 },
 };
