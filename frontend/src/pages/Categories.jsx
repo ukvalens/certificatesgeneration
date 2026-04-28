@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getCategories, createCategory, updateCategory, deleteCategory } from '../api';
+import DashboardLayout from '../components/DashboardLayout';
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
@@ -27,8 +28,7 @@ export default function Categories() {
   };
 
   return (
-    <div style={styles.page}>
-      <h1 style={styles.title}>Categories</h1>
+    <DashboardLayout title="Categories">
       <div style={styles.form}>
         <input value={name} onChange={e => setName(e.target.value)} placeholder="Category name" style={styles.input} />
         <button onClick={handleAdd} style={styles.btn}>Add Category</button>
@@ -61,13 +61,11 @@ export default function Categories() {
           ))}
         </tbody>
       </table>
-    </div>
+    </DashboardLayout>
   );
 }
 
 const styles = {
-  page: { padding: 32 },
-  title: { fontSize: 28, color: '#1e3a8a', marginBottom: 24 },
   form: { display: 'flex', gap: 12, marginBottom: 24 },
   input: { flex: 1, padding: '10px 14px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 14 },
   inlineInput: { width: '100%', padding: '6px 10px', border: '1px solid #93c5fd', borderRadius: 4, fontSize: 13 },

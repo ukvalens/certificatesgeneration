@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getCertificateTypes, getCategories, createCertificateType, updateCertificateType, deleteCertificateType } from '../api';
+import DashboardLayout from '../components/DashboardLayout';
 
 export default function CertificateTypes() {
   const [types, setTypes] = useState([]);
@@ -33,8 +34,7 @@ export default function CertificateTypes() {
   };
 
   return (
-    <div style={styles.page}>
-      <h1 style={styles.title}>Certificate Types</h1>
+    <DashboardLayout title="Certificate Types">
       <div style={styles.form}>
         <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Type name" style={styles.input} />
         <select value={form.category_id} onChange={e => setForm({ ...form, category_id: e.target.value })} style={styles.input}>
@@ -79,13 +79,11 @@ export default function CertificateTypes() {
           ))}
         </tbody>
       </table>
-    </div>
+    </DashboardLayout>
   );
 }
 
 const styles = {
-  page: { padding: 32 },
-  title: { fontSize: 28, color: '#1e3a8a', marginBottom: 24 },
   form: { display: 'flex', gap: 12, marginBottom: 24 },
   input: { flex: 1, padding: '10px 14px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 14 },
   inlineInput: { width: '100%', padding: '6px 10px', border: '1px solid #93c5fd', borderRadius: 4, fontSize: 13 },

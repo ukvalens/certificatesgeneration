@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -12,6 +12,8 @@ import Categories from './pages/Categories';
 import Verify from './pages/Verify';
 import IssuerDashboard from './pages/IssuerDashboard';
 import RecipientDashboard from './pages/RecipientDashboard';
+
+const dashboardPaths = ['/dashboard', '/certificates', '/certificate-types', '/categories'];
 
 function DashboardRouter() {
   const { user, loading } = useAuth();
@@ -30,27 +32,36 @@ function ProtectedRoute({ children, roles }) {
   return children;
 }
 
+function Layout() {
+  const { pathname } = useLocation();
+  const isDashboard = dashboardPaths.some(p => pathname.startsWith(p));
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      {!isDashboard && <Navbar />}
+      <div style={{ background: '#f8fafc', flex: 1 }}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/verify" element={<Verify />} />
+          <Route path="/verify/:code" element={<Verify />} />
+          <Route path="/dashboard" element={<DashboardRouter />} />
+          <Route path="/certificates" element={<ProtectedRoute roles={['admin']}><Certificates /></ProtectedRoute>} />
+          <Route path="/certificate-types" element={<ProtectedRoute roles={['admin']}><CertificateTypes /></ProtectedRoute>} />
+          <Route path="/categories" element={<ProtectedRoute roles={['admin']}><Categories /></ProtectedRoute>} />
+        </Routes>
+      </div>
+      {!isDashboard && <Footer />}
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-          <Navbar />
-          <div style={{ background: '#f8fafc', flex: 1 }}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/verify" element={<Verify />} />
-              <Route path="/verify/:code" element={<Verify />} />
-              <Route path="/dashboard" element={<DashboardRouter />} />
-              <Route path="/certificates" element={<ProtectedRoute roles={['admin']}><Certificates /></ProtectedRoute>} />
-              <Route path="/certificate-types" element={<ProtectedRoute roles={['admin']}><CertificateTypes /></ProtectedRoute>} />
-              <Route path="/categories" element={<ProtectedRoute roles={['admin']}><Categories /></ProtectedRoute>} />
-            </Routes>
-          </div>
-          <Footer />
-        </div>
+        <Layout />
       </AuthProvider>
     </BrowserRouter>
   );

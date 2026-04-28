@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getCertificates, getCertificateTypes, createCertificate, downloadCertificate } from '../api';
-import { useAuth } from '../context/AuthContext';
+import DashboardLayout from '../components/DashboardLayout';
 
 export default function IssuerDashboard() {
-  const { user } = useAuth();
   const [certificates, setCertificates] = useState([]);
   const [types, setTypes] = useState([]);
   const [form, setForm] = useState({ user_name: '', email: '', certificate_type_id: '', issue_date: '' });
@@ -33,14 +32,7 @@ export default function IssuerDashboard() {
   );
 
   return (
-    <div style={styles.page}>
-      <div style={styles.header}>
-        <div>
-          <h1 style={styles.title}>Issuer Dashboard</h1>
-          <p style={styles.sub}>Welcome, {user?.name}</p>
-        </div>
-      </div>
-
+    <DashboardLayout title="Issue Certificates">
       <div style={styles.card}>
         <h2 style={styles.cardTitle}>Issue New Certificate</h2>
         {success && <div style={styles.success}>{success}</div>}
@@ -57,7 +49,7 @@ export default function IssuerDashboard() {
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '24px 0 12px' }}>
-        <h2 style={styles.cardTitle}>Issued Certificates</h2>
+        <h2 style={styles.cardTitle}>Issued Certificates ({filtered.length})</h2>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..." style={{ ...styles.input, maxWidth: 260 }} />
       </div>
 
@@ -79,15 +71,11 @@ export default function IssuerDashboard() {
           ))}
         </tbody>
       </table>
-    </div>
+    </DashboardLayout>
   );
 }
 
 const styles = {
-  page: { padding: 32 },
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 },
-  title: { fontSize: 28, color: '#1e3a8a', marginBottom: 4 },
-  sub: { color: '#64748b', fontSize: 14 },
   card: { background: '#fff', borderRadius: 10, padding: 24, boxShadow: '0 2px 8px #0001', marginBottom: 8 },
   cardTitle: { fontSize: 18, color: '#1e3a8a', marginBottom: 16 },
   form: { display: 'flex', gap: 12, flexWrap: 'wrap' },

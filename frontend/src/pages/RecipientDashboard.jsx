@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getCertificates, downloadCertificate } from '../api';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import DashboardLayout from '../components/DashboardLayout';
 
 export default function RecipientDashboard() {
   const { user } = useAuth();
@@ -22,15 +23,7 @@ export default function RecipientDashboard() {
   );
 
   return (
-    <div style={styles.page}>
-      <div style={styles.header}>
-        <div>
-          <h1 style={styles.title}>My Certificates</h1>
-          <p style={styles.sub}>Welcome, {user?.name}</p>
-        </div>
-        <Link to="/verify" style={styles.verifyBtn}>🔍 Verify a Certificate</Link>
-      </div>
-
+    <DashboardLayout title="My Certificates">
       {certificates.length === 0 ? (
         <div style={styles.empty}>
           <div style={{ fontSize: 48, marginBottom: 16 }}>🎖️</div>
@@ -60,16 +53,11 @@ export default function RecipientDashboard() {
           </div>
         </>
       )}
-    </div>
+    </DashboardLayout>
   );
 }
 
 const styles = {
-  page: { padding: 32 },
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 },
-  title: { fontSize: 28, color: '#1e3a8a', marginBottom: 4 },
-  sub: { color: '#64748b', fontSize: 14 },
-  verifyBtn: { background: '#2563eb', color: '#fff', padding: '10px 18px', borderRadius: 6, textDecoration: 'none', fontSize: 14 },
   search: { width: '100%', maxWidth: 360, padding: '10px 14px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 14, marginBottom: 24, boxSizing: 'border-box' },
   empty: { background: '#fff', borderRadius: 12, padding: 60, textAlign: 'center', boxShadow: '0 2px 8px #0001' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20 },

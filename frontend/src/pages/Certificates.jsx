@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getCertificates, getCertificateTypes, createCertificate, updateCertificate, deleteCertificate, downloadCertificate } from '../api';
+import DashboardLayout from '../components/DashboardLayout';
 
 export default function Certificates() {
   const [certificates, setCertificates] = useState([]);
@@ -48,8 +49,7 @@ export default function Certificates() {
   );
 
   return (
-    <div style={styles.page}>
-      <h1 style={styles.title}>Certificates</h1>
+    <DashboardLayout title="Certificates">
       <div style={styles.card}>
         <h2 style={styles.subtitle}>Issue New Certificate</h2>
         <div style={styles.form}>
@@ -107,13 +107,11 @@ export default function Certificates() {
           ))}
         </tbody>
       </table>
-    </div>
+    </DashboardLayout>
   );
 }
 
 const styles = {
-  page: { padding: 32 },
-  title: { fontSize: 28, color: '#1e3a8a', marginBottom: 24 },
   subtitle: { fontSize: 18, color: '#1e3a8a', marginBottom: 12 },
   card: { background: '#fff', borderRadius: 10, padding: 24, boxShadow: '0 2px 8px #0001', marginBottom: 8 },
   form: { display: 'flex', gap: 12, flexWrap: 'wrap' },
