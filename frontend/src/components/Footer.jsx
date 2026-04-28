@@ -8,12 +8,7 @@ export default function Footer() {
           <i className="fa-solid fa-graduation-cap" style={{ marginRight: 8 }}></i>
           CertSystem
         </div>
-        <div style={styles.links}>
-          <Link to="/" style={styles.link}><i className="fa-solid fa-house" style={{ marginRight: 5 }}></i>Home</Link>
-          <Link to="/verify" style={styles.link}><i className="fa-solid fa-magnifying-glass" style={{ marginRight: 5 }}></i>Verify</Link>
-          <Link to="/login" style={styles.link}><i className="fa-solid fa-right-to-bracket" style={{ marginRight: 5 }}></i>Login</Link>
-          <Link to="/register" style={styles.link}><i className="fa-solid fa-user-plus" style={{ marginRight: 5 }}></i>Register</Link>
-        </div>
+    
         <div style={styles.copy}>
           <i className="fa-regular fa-copyright" style={{ marginRight: 5 }}></i>
           {new Date().getFullYear()} CertSystem. All rights reserved.
