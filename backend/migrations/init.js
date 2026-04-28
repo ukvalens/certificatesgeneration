@@ -10,7 +10,7 @@ const createTables = async () => {
 
     CREATE TABLE IF NOT EXISTS certificate_types (
       id SERIAL PRIMARY KEY,
-      name VARCHAR(150) NOT NULL,
+      name VARCHAR(150) NOT NULL UNIQUE,
       category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL,
       description TEXT,
       created_at TIMESTAMP DEFAULT NOW()
@@ -43,10 +43,10 @@ const createTables = async () => {
       ('Certificate of Completion', NULL, 'General completion certificate'),
       ('IT Technical Certificate', (SELECT id FROM categories WHERE name='Networking'), 'IT and networking technical certificate'),
       ('Digital Online Certificate', (SELECT id FROM categories WHERE name='Software Development'), 'Online digital learning certificate')
-    ON CONFLICT DO NOTHING;
+    ON CONFLICT (name) DO NOTHING;
   `);
 
-  console.log('Database tables created and seeded.');
+  console.log('Database tables ready.');
 };
 
 module.exports = createTables;
