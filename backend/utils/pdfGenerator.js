@@ -19,8 +19,21 @@ const CATEGORY_HEADERS = {
   Default: 'CERTIFICATE OF ACHIEVEMENT',
 };
 
+const FALLBACK_ACCENTS = ['#2563eb', '#7c3aed', '#db2777', '#0f766e', '#b45309', '#047857', '#7c2d12', '#831843'];
+
+const getStringHash = (text) => {
+  return text.split('').reduce((hash, char) => char.charCodeAt(0) + ((hash << 5) - hash), 0);
+};
+
 const getCategoryStyle = (category) => {
-  return CATEGORY_STYLES[category] || CATEGORY_STYLES.Default;
+  if (!category) return CATEGORY_STYLES.Default;
+  if (CATEGORY_STYLES[category]) return CATEGORY_STYLES[category];
+
+  const index = Math.abs(getStringHash(category)) % FALLBACK_ACCENTS.length;
+  return {
+    bg: '#f8fafc',
+    accent: FALLBACK_ACCENTS[index],
+  };
 };
 
 const getHeaderText = (category, headerText) => {
@@ -53,7 +66,8 @@ const generatePDF = async (certificateData) => {
     const { width, height } = doc.page;
     const margin = 40;
     const innerWidth = width - margin * 2;
-    const categoryStyle = getCategoryStyle(certificateData.category);
+    const categoryKey = certificateData.category || certificateData.certificate_type;
+    const categoryStyle = getCategoryStyle(categoryKey);
     const headerText = getHeaderText(certificateData.category, certificateData.header_text);
 
     // Background and border

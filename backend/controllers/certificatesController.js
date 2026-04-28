@@ -39,7 +39,7 @@ const verify = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const { user_name, email, organization, description, certificate_type_id, issue_date } = req.body;
+  const { user_name, email, organization, description, header_text, certificate_type_id, issue_date } = req.body;
   if (!user_name || !certificate_type_id) {
     return res.status(400).json({ error: 'user_name and certificate_type_id are required' });
   }
@@ -49,9 +49,9 @@ const create = async (req, res) => {
   const qr_code = await generateQRCode(verifyUrl);
 
   const result = await pool.query(
-    `INSERT INTO certificates (user_name, email, organization, description, certificate_type_id, issue_date, certificate_code, qr_code)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-    [user_name, email || null, organization || null, description || null, certificate_type_id, issue_date || new Date(), certificate_code, qr_code]
+    `INSERT INTO certificates (user_name, email, organization, description, header_text, certificate_type_id, issue_date, certificate_code, qr_code)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+    [user_name, email || null, organization || null, description || null, header_text || null, certificate_type_id, issue_date || new Date(), certificate_code, qr_code]
   );
   res.status(201).json(result.rows[0]);
 };
@@ -75,6 +75,7 @@ const download = async (req, res) => {
     category: cert.category,
     organization: cert.organization,
     description: cert.description,
+    header_text: cert.header_text,
     issue_date: new Date(cert.issue_date).toLocaleDateString(),
     certificate_code: cert.certificate_code,
     qr_code: cert.qr_code,
@@ -87,10 +88,10 @@ const download = async (req, res) => {
 
 const update = async (req, res) => {
   const { id } = req.params;
-  const { user_name, email, organization, description, certificate_type_id, issue_date } = req.body;
+  const { user_name, email, organization, description, header_text, certificate_type_id, issue_date } = req.body;
   const result = await pool.query(
-    `UPDATE certificates SET user_name=$1, email=$2, organization=$3, description=$4, certificate_type_id=$5, issue_date=$6 WHERE id=$7 RETURNING *`,
-    [user_name, email || null, organization || null, description || null, certificate_type_id, issue_date, id]
+    `UPDATE certificates SET user_name=$1, email=$2, organization=$3, description=$4, header_text=$5, certificate_type_id=$6, issue_date=$7 WHERE id=$8 RETURNING *`,
+    [user_name, email || null, organization || null, description || null, header_text || null, certificate_type_id, issue_date, id]
   );
   if (!result.rows.length) return res.status(404).json({ error: 'Not found' });
   res.json(result.rows[0]);

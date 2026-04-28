@@ -31,6 +31,7 @@ const createTables = async () => {
       email VARCHAR(150),
       organization VARCHAR(150),
       description TEXT,
+      header_text TEXT,
       certificate_type_id INTEGER REFERENCES certificate_types(id) ON DELETE SET NULL,
       issue_date DATE DEFAULT CURRENT_DATE,
       certificate_code VARCHAR(50) NOT NULL UNIQUE,
@@ -42,6 +43,7 @@ const createTables = async () => {
   await pool.query(`
     ALTER TABLE certificates ADD COLUMN IF NOT EXISTS organization VARCHAR(150);
     ALTER TABLE certificates ADD COLUMN IF NOT EXISTS description TEXT;
+    ALTER TABLE certificates ADD COLUMN IF NOT EXISTS header_text TEXT;
   `);
 
   await pool.query(`
