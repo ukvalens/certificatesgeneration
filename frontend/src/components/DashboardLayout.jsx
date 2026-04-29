@@ -63,8 +63,18 @@ export default function DashboardLayout({ children, title }) {
     height: '100vh',
   };
 
+  const mainStyle = {
+    ...styles.main,
+    padding: isMobile ? '16px' : 28,
+  };
+
+  const rootStyle = {
+    ...styles.root,
+    overflowX: 'hidden',
+  };
+
   return (
-    <div className="dashboard-root" style={styles.root}>
+    <div className="dashboard-root" style={rootStyle}>
       {/* Sidebar */}
       <aside className={`dashboard-sidebar${isMobile && isMobileOpen ? ' open' : ''}`} style={sidebarStyle}>
         <div style={styles.sidebarTop}>
