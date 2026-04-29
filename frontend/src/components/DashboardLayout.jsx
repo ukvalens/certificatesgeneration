@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Footer from './Footer';
@@ -27,13 +27,46 @@ export default function DashboardLayout({ children, title }) {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const menu = roleMenus[user?.role] || [];
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.matchMedia('(max-width: 900px)').matches : false);
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 900px)');
+    const updateMobile = (event) => {
+      const matches = event.matches !== undefined ? event.matches : event.currentTarget.matches;
+      setIsMobile(matches);
+      if (!matches) {
+        setIsMobileOpen(false);
+      }
+    };
+    updateMobile(query);
+    query.addEventListener?.('change', updateMobile);
+    query.addListener?.(updateMobile);
+    return () => {
+      query.removeEventListener?.('change', updateMobile);
+      query.removeListener?.(updateMobile);
+    };
+  }, []);
 
   const handleLogout = () => { logout(); navigate('/'); };
+
+  const sidebarStyle = {
+    ...styles.sidebar,
+    width: isMobile ? 220 : collapsed ? 64 : 220,
+    transform: isMobile && !isMobileOpen ? 'translateX(-100%)' : 'translateX(0)',
+    position: isMobile ? 'fixed' : 'sticky',
+    left: isMobile ? 0 : 'auto',
+    top: isMobile ? 0 : 'auto',
+    zIndex: isMobile ? 1000 : 'auto',
+    boxShadow: isMobile ? '2px 0 16px rgba(0,0,0,0.14)' : 'none',
+    transition: 'transform 0.2s ease',
+    height: '100vh',
+  };
 
   return (
     <div className="dashboard-root" style={styles.root}>
       {/* Sidebar */}
-      <aside className="dashboard-sidebar" style={{ ...styles.sidebar, width: collapsed ? 64 : 220 }}>
+      <aside className={`dashboard-sidebar${isMobile && isMobileOpen ? ' open' : ''}`} style={sidebarStyle}>
         <div style={styles.sidebarTop}>
           <span style={styles.logo}>{collapsed ? '🎓' : '🎓 CertSystem'}</span>
           <button onClick={() => setCollapsed(!collapsed)} style={styles.collapseBtn}>{collapsed ? '→' : '←'}</button>
@@ -44,6 +77,7 @@ export default function DashboardLayout({ children, title }) {
               key={item.to}
               to={item.to}
               end={item.to === '/dashboard'}
+              onClick={() => isMobile && setIsMobileOpen(false)}
               style={({ isActive }) => ({ ...styles.navItem, ...(isActive ? styles.navActive : {}) })}
             >
               <span style={styles.navIcon}>{item.icon}</span>
@@ -58,10 +92,17 @@ export default function DashboardLayout({ children, title }) {
         )}
       </aside>
 
+      {isMobile && isMobileOpen && <div style={styles.overlay} onClick={() => setIsMobileOpen(false)} />}
+
       {/* Main area */}
       <div style={styles.main}>
         {/* Topbar */}
         <header className="dashboard-topbar" style={styles.topbar}>
+          {isMobile && (
+            <button type="button" onClick={() => setIsMobileOpen(open => !open)} style={styles.mobileToggle}>
+              <i className="fa-solid fa-bars"></i>
+            </button>
+          )}
           <div>
             <span style={styles.greeting}>👋 Hello, {user?.name}</span>
             <span style={styles.date}>{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
@@ -101,7 +142,9 @@ const styles = {
   sidebarFooter: { padding: '12px 16px', borderTop: `1px solid ${colors.secondary}` },
   roleTag: { background: colors.secondary, color: colors.surface, fontSize: 11, padding: '4px 10px', borderRadius: 20, display: 'inline-block', fontWeight: 'bold' },
   main: { flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 },
-  topbar: { background: colors.surface, padding: '16px 28px', minHeight: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 1px 4px rgba(0,0,0,0.08)', flexShrink: 0 },
+  topbar: { background: colors.surface, padding: '16px 28px', minHeight: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 1px 4px rgba(0,0,0,0.08)', flexShrink: 0, gap: 12 },
+  mobileToggle: { background: 'transparent', border: '1px solid rgba(0,0,0,0.12)', borderRadius: 8, width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: colors.dark, flexShrink: 0 },
+  overlay: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.35)', zIndex: 900 },
   greeting: { fontSize: 16, fontWeight: 600, color: colors.dark, marginRight: 16 },
   date: { fontSize: 13, color: colors.muted },
   topRight: { display: 'flex', alignItems: 'center', gap: 12 },
