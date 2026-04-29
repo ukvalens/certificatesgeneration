@@ -46,6 +46,33 @@ a:hover {
   opacity: 0.85;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.navbar {
+  flex-wrap: wrap;
+  min-height: 60px;
+}
+
+.nav-links {
+  min-width: 0;
+}
+
+.dashboard-topbar {
+  min-height: 64px;
+}
+
+.dashboard-sidebar {
+  min-height: 100vh;
+}
+
+.verify-form input,
+.verify-form button {
+  min-width: 0;
+}
+
 .app-container {
   width: min(1200px, 100%);
   margin: 0 auto;

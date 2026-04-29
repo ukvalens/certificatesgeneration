@@ -90,7 +90,7 @@ export default function DashboardLayout({ children, title }) {
 
 const styles = {
   root: { display: 'flex', minHeight: '100vh', background: colors.light },
-  sidebar: { background: colors.primary, display: 'flex', flexDirection: 'column', transition: 'width 0.2s', flexShrink: 0, position: 'sticky', top: 0, height: '100vh', overflowY: 'auto' },
+  sidebar: { background: colors.primary, display: 'flex', flexDirection: 'column', transition: 'width 0.2s', flexShrink: 0, position: 'sticky', top: 0, minHeight: '100vh', overflowY: 'auto' },
   sidebarTop: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 12px 16px', borderBottom: `1px solid ${colors.secondary}` },
   logo: { color: colors.surface, fontWeight: 'bold', fontSize: 15, whiteSpace: 'nowrap', overflow: 'hidden' },
   collapseBtn: { background: colors.secondary, border: 'none', color: colors.surface, borderRadius: 4, cursor: 'pointer', padding: '2px 8px', fontSize: 13 },
@@ -101,7 +101,7 @@ const styles = {
   sidebarFooter: { padding: '12px 16px', borderTop: `1px solid ${colors.secondary}` },
   roleTag: { background: colors.secondary, color: colors.surface, fontSize: 11, padding: '4px 10px', borderRadius: 20, display: 'inline-block', fontWeight: 'bold' },
   main: { flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 },
-  topbar: { background: colors.surface, padding: '0 28px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 1px 4px rgba(0,0,0,0.08)', flexShrink: 0 },
+  topbar: { background: colors.surface, padding: '16px 28px', minHeight: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 1px 4px rgba(0,0,0,0.08)', flexShrink: 0 },
   greeting: { fontSize: 16, fontWeight: 600, color: colors.dark, marginRight: 16 },
   date: { fontSize: 13, color: colors.muted },
   topRight: { display: 'flex', alignItems: 'center', gap: 12 },

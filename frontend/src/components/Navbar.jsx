@@ -67,10 +67,10 @@ export default function Navbar() {
 }
 
 const styles = {
-  nav: { background: colors.primary, padding: '0 24px', display: 'flex', alignItems: 'center', height: 60, gap: 16 },
-  brand: { color: colors.surface, fontWeight: 'bold', fontSize: 20, textDecoration: 'none', marginRight: 24, whiteSpace: 'nowrap' },
-  links: { display: 'flex', gap: 4, flex: 1 },
-  right: { display: 'flex', alignItems: 'center', gap: 10, marginLeft: 'auto' },
+  nav: { background: colors.primary, padding: '16px 24px', display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' },
+  brand: { color: colors.surface, fontWeight: 'bold', fontSize: 20, textDecoration: 'none', marginRight: 24, whiteSpace: 'nowrap', flexShrink: 0 },
+  links: { display: 'flex', gap: 4, flex: 1, flexWrap: 'wrap', minWidth: 0 },
+  right: { display: 'flex', alignItems: 'center', gap: 10, marginLeft: 'auto', flexWrap: 'wrap' },
   link: { color: 'rgba(255,255,255,0.8)', textDecoration: 'none', padding: '6px 12px', borderRadius: 6, fontSize: 14, whiteSpace: 'nowrap' },
   active: { background: colors.secondary, color: colors.surface },
   registerBtn: { background: colors.surface, color: colors.primary, textDecoration: 'none', padding: '6px 14px', borderRadius: 6, fontSize: 14, fontWeight: 'bold' },
