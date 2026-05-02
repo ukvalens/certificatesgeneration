@@ -39,7 +39,6 @@ export default function RecipientDashboard() {
               <div key={c.id} style={styles.card}>
                 <div style={styles.cardIcon}>🎓</div>
                 <h3 style={styles.cardType}>{c.certificate_type}</h3>
-                {c.category && <span style={styles.badge}>{c.category}</span>}
                 <div style={styles.info}>
                   <div><span style={styles.label}>Issued to:</span> {c.user_name}</div>
                   <div><span style={styles.label}>Date:</span> {new Date(c.issue_date).toLocaleDateString()}</div>

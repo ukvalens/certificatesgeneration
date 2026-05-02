@@ -57,7 +57,7 @@ export default function IssuerDashboard() {
       <div className="table-responsive">
         <table style={styles.table}>
         <thead>
-          <tr>{['Name', 'Email', 'Type', 'Category', 'Code', 'Date', 'PDF'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
+          <tr>{['Name', 'Email', 'Type', 'Code', 'Date', 'PDF'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
         </thead>
         <tbody>
           {filtered.map(c => (
@@ -65,7 +65,6 @@ export default function IssuerDashboard() {
               <td style={styles.td}>{c.user_name}</td>
               <td style={styles.td}>{c.email || '—'}</td>
               <td style={styles.td}>{c.certificate_type}</td>
-              <td style={styles.td}>{c.category || '—'}</td>
               <td style={styles.td}><code style={styles.code}>{c.certificate_code}</code></td>
               <td style={styles.td}>{new Date(c.issue_date).toLocaleDateString()}</td>
               <td style={styles.td}><a href={downloadCertificate(c.id)} target="_blank" rel="noreferrer" style={styles.dlBtn}>PDF</a></td>

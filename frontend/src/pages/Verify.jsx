@@ -50,7 +50,6 @@ export default function Verify() {
               <Field label="Recipient" value={result.user_name} />
               <Field label="Email" value={result.email || '—'} />
               <Field label="Certificate Type" value={result.certificate_type} />
-              <Field label="Course" value={result.category || '—'} />
               <Field label="Issue Date" value={new Date(result.issue_date).toLocaleDateString()} />
               <Field label="Certificate Code" value={result.certificate_code} mono />
             </div>

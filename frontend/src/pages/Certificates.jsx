@@ -64,7 +64,7 @@ export default function Certificates() {
           <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Certificate description" style={styles.textarea} />
           <select value={form.certificate_type_id} onChange={e => setForm({ ...form, certificate_type_id: e.target.value })} style={styles.input}>
             <option value="">Select Certificate Type *</option>
-            {types.map(t => <option key={t.id} value={t.id}>{t.name}{t.category_name ? ` (${t.category_name})` : ''}</option>)}
+            {types.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
           </select>
           <input type="date" value={form.issue_date} onChange={e => setForm({ ...form, issue_date: e.target.value })} style={styles.input} />
           <button onClick={handleIssue} style={styles.btn}>Issue Certificate</button>
@@ -79,16 +79,16 @@ export default function Certificates() {
       <div className="table-responsive">
         <table style={styles.table}>
         <thead>
-          <tr>{['Name', 'Email', 'Type', 'Category', 'Code', 'Date', 'Actions'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
+          <tr>{['Name', 'Email', 'Type', 'Code', 'Date', 'Actions'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
         </thead>
         <tbody>
           {filtered.map(c => editId === c.id ? (
             <tr key={c.id} style={{ background: colors.light }}>
               <td style={styles.td}><input value={editRow.user_name} onChange={e => setEditRow({ ...editRow, user_name: e.target.value })} style={styles.inlineInput} /></td>
               <td style={styles.td}><input value={editRow.email} onChange={e => setEditRow({ ...editRow, email: e.target.value })} style={styles.inlineInput} /></td>
-              <td style={styles.td} colSpan={2}>
+              <td style={styles.td}>
                 <select value={editRow.certificate_type_id} onChange={e => setEditRow({ ...editRow, certificate_type_id: e.target.value })} style={styles.inlineInput}>
-                  {types.map(t => <option key={t.id} value={t.id}>{t.name}{t.category_name ? ` (${t.category_name})` : ''}</option>)}
+                  {types.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
                 </select>
               </td>
               <td style={styles.td}><code style={styles.code}>{c.certificate_code}</code></td>
@@ -103,7 +103,6 @@ export default function Certificates() {
               <td style={styles.td}>{c.user_name}</td>
               <td style={styles.td}>{c.email || '—'}</td>
               <td style={styles.td}>{c.certificate_type}</td>
-              <td style={styles.td}>{c.category || '—'}</td>
               <td style={styles.td}><code style={styles.code}>{c.certificate_code}</code></td>
               <td style={styles.td}>{new Date(c.issue_date).toLocaleDateString()}</td>
               <td style={styles.td}>
