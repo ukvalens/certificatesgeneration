@@ -13,8 +13,8 @@ export default function Home() {
   return (
     <div style={styles.page}>
       {/* Features */}
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Features</h2>
+      <div className="home-section" style={styles.section}>
+        <h2 className="home-section-title" style={styles.sectionTitle}>Features</h2>
         <div style={styles.grid}>
           {features.map(f => (
             <div key={f.title} style={styles.card}>

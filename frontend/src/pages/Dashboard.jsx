@@ -48,7 +48,7 @@ export default function Dashboard() {
 
 function StatCard({ label, value, color, icon }) {
   return (
-    <div style={{ ...styles.card, borderTop: `4px solid ${color}` }}>
+    <div className="stat-card" style={{ ...styles.card, borderTop: `4px solid ${color}` }}>
       <div style={{ fontSize: 28, marginBottom: 8 }}>{icon}</div>
       <div style={{ fontSize: 36, fontWeight: 'bold', color }}>{value}</div>
       <div style={{ color: colors.muted, marginTop: 4, fontSize: 14 }}>{label}</div>

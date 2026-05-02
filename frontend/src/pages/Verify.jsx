@@ -46,7 +46,7 @@ export default function Verify() {
         {result && (
           <div style={styles.result}>
             <div style={styles.badge}>✅ Certificate Verified</div>
-            <div style={styles.grid}>
+            <div className="verify-result-grid" style={styles.grid}>
               <Field label="Recipient" value={result.user_name} />
               <Field label="Email" value={result.email || '—'} />
               <Field label="Certificate Type" value={result.certificate_type} />

@@ -3,7 +3,7 @@ import { colors } from '../theme';
 export default function Footer() {
   return (
     <footer style={styles.footer}>
-      <div style={styles.inner}>
+      <div className="footer-inner" style={styles.inner}>
         <div style={styles.brand}>
           <i className="fa-solid fa-graduation-cap" style={{ marginRight: 8 }}></i>
           CertSystem
