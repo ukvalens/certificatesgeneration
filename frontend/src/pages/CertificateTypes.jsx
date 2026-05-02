@@ -9,6 +9,8 @@ export default function CertificateTypes() {
   const [form, setForm] = useState({ name: '', category_id: '', description: '' });
   const [editId, setEditId] = useState(null);
   const [editRow, setEditRow] = useState({ name: '', category_id: '', description: '' });
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 10;
 
   const load = () => Promise.all([getCertificateTypes(), getCategories()]).then(([t, c]) => {
     setTypes(t.data);
@@ -20,7 +22,7 @@ export default function CertificateTypes() {
   const handleAdd = () => {
     if (!form.name.trim()) return alert('Course name is required');
     createCertificateType({ ...form, category_id: form.category_id || null })
-      .then(() => { setForm({ name: '', category_id: '', description: '' }); load(); })
+      .then(() => { setForm({ name: '', category_id: '', description: '' }); setPage(1); load(); })
       .catch(err => alert(err.response?.data?.error || 'Failed to add type'));
   };
 
@@ -32,6 +34,9 @@ export default function CertificateTypes() {
   const handleDelete = (id) => {
     if (confirm('Delete this course?')) deleteCertificateType(id).then(load);
   };
+
+  const totalPages = Math.ceil(types.length / PAGE_SIZE);
+  const paginated = types.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <DashboardLayout title="Courses">
@@ -58,7 +63,7 @@ export default function CertificateTypes() {
             </tr>
           </thead>
           <tbody>
-            {types.map(t => editId === t.id ? (
+            {paginated.map(t => editId === t.id ? (
               <tr key={t.id} style={{ background: colors.light }}>
                 <td style={styles.td}><input value={editRow.name} onChange={e => setEditRow({ ...editRow, name: e.target.value })} style={styles.inlineInput} /></td>
                 <td style={styles.td}>
@@ -91,6 +96,15 @@ export default function CertificateTypes() {
           </tbody>
         </table>
       </div>
+      {totalPages > 1 && (
+        <div style={styles.pagination}>
+          <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} style={styles.pageBtn}>‹ Prev</button>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
+            <button key={p} onClick={() => setPage(p)} style={{ ...styles.pageBtn, ...(p === page ? styles.pageBtnActive : {}) }}>{p}</button>
+          ))}
+          <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages} style={styles.pageBtn}>Next ›</button>
+        </div>
+      )}
     </DashboardLayout>
   );
 }
@@ -107,6 +121,9 @@ const styles = {
   saveBtn: { background: colors.primary, color: colors.surface, border: 'none', padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 12, marginRight: 6 },
   cancelBtn: { background: colors.dark, color: colors.surface, border: 'none', padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 12 },
   delBtn: { background: colors.secondary, color: colors.surface, border: 'none', padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 12 },
+  pagination: { display: 'flex', gap: 6, justifyContent: 'center', alignItems: 'center', marginTop: 20, flexWrap: 'wrap' },
+  pageBtn: { background: colors.surface, color: colors.dark, border: `1px solid ${colors.border}`, padding: '6px 12px', borderRadius: 6, cursor: 'pointer', fontSize: 13 },
+  pageBtnActive: { background: colors.primary, color: colors.surface, border: `1px solid ${colors.primary}`, fontWeight: 'bold' },
   table: { width: '100%', borderCollapse: 'collapse', background: colors.surface, borderRadius: 10, overflow: 'hidden', boxShadow: shadows.panel },
   th: { background: colors.primary, color: colors.surface, padding: '10px 16px', textAlign: 'left', fontSize: 13 },
   td: { padding: '10px 16px', borderBottom: `1px solid ${colors.light}`, fontSize: 14 },
