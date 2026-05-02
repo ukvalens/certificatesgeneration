@@ -7,6 +7,8 @@ import { colors } from './theme';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import Dashboard from './pages/Dashboard';
 import Certificates from './pages/Certificates';
 import CertificateTypes from './pages/CertificateTypes';
@@ -34,6 +36,13 @@ function ProtectedRoute({ children, roles }) {
   return children;
 }
 
+function GuestRoute({ children }) {
+  const { user, loading } = useAuth();
+  if (loading) return <div style={{ padding: 40, textAlign: 'center' }}>Loading...</div>;
+  if (user) return <Navigate to="/dashboard" />;
+  return children;
+}
+
 function Layout() {
   const { pathname } = useLocation();
   const { user } = useAuth();
@@ -47,8 +56,10 @@ function Layout() {
       <div className="app-container" style={{ background: colors.light, flex: 1 }}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
+          <Route path="/register" element={<GuestRoute><Register /></GuestRoute>} />
+          <Route path="/forgot-password" element={<GuestRoute><ForgotPassword /></GuestRoute>} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route
             path="/verify"
             element={
