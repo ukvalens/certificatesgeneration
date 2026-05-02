@@ -299,6 +299,7 @@ img {
   .auth-box,
   .box {
     padding: 24px 16px;
+    max-width: 100% !important;
   }
 
   .page-center {

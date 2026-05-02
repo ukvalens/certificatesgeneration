@@ -77,8 +77,8 @@ function Field({ label, value, mono }) {
 }
 
 const styles = {
-  page: { minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 32, background: colors.light },
-  box: { background: colors.surface, borderRadius: 12, padding: 40, boxShadow: shadows.panel, width: '100%', maxWidth: 560 },
+  page: { minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px 16px', background: colors.light },
+  box: { background: colors.surface, borderRadius: 12, padding: 40, boxShadow: shadows.panel, width: '100%', maxWidth: 420 },
   title: { fontSize: 26, color: colors.dark, marginBottom: 8 },
   desc: { color: colors.muted, marginBottom: 24, fontSize: 14 },
   form: { display: 'flex', gap: 10, marginBottom: 20 },
