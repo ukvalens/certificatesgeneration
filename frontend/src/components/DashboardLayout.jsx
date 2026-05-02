@@ -5,20 +5,20 @@ import { colors } from '../theme';
 
 const roleMenus = {
   admin: [
-    { icon: '📊', label: 'Overview', to: '/dashboard' },
-    { icon: '🎓', label: 'Certificates', to: '/certificates' },
-    { icon: '📋', label: 'Courses', to: '/certificate-types' },
-    { icon: '🗂️', label: 'Certificate Types', to: '/categories' },
-    { icon: '👥', label: 'Users', to: '/users' },
-    { icon: '🔍', label: 'Verify', to: '/verify' },
+    { icon: 'fa-chart-pie', label: 'Overview', to: '/dashboard' },
+    { icon: 'fa-certificate', label: 'Certificates', to: '/certificates' },
+    { icon: 'fa-book-open', label: 'Courses', to: '/certificate-types' },
+    { icon: 'fa-layer-group', label: 'Certificate Types', to: '/categories' },
+    { icon: 'fa-users', label: 'Users', to: '/users' },
+    { icon: 'fa-magnifying-glass', label: 'Verify', to: '/verify' },
   ],
   issuer: [
-    { icon: '📊', label: 'Overview', to: '/dashboard' },
-    { icon: '🔍', label: 'Verify', to: '/verify' },
+    { icon: 'fa-chart-pie', label: 'Overview', to: '/dashboard' },
+    { icon: 'fa-magnifying-glass', label: 'Verify', to: '/verify' },
   ],
   recipient: [
-    { icon: '🎖️', label: 'My Certificates', to: '/dashboard' },
-    { icon: '🔍', label: 'Verify', to: '/verify' },
+    { icon: 'fa-medal', label: 'My Certificates', to: '/dashboard' },
+    { icon: 'fa-magnifying-glass', label: 'Verify', to: '/verify' },
   ],
 };
 
@@ -83,11 +83,11 @@ export default function DashboardLayout({ children, title }) {
         zIndex: isMobile ? 1000 : 1,
       }}>
         <div style={s.sidebarTop}>
-          {!collapsed && <span style={s.logo}>🎓 CertSystem</span>}
-          {collapsed && <span style={s.logoIcon}>🎓</span>}
+          {!collapsed && <span style={s.logo}><i className="fa-solid fa-graduation-cap" style={{ marginRight: 8 }} />CertSystem</span>}
+          {collapsed && <i className="fa-solid fa-graduation-cap" style={{ color: '#fff', fontSize: 18 }} />}
           {!isMobile && (
             <button onClick={() => setCollapsed(c => !c)} style={s.collapseBtn}>
-              {collapsed ? '→' : '←'}
+              <i className={`fa-solid ${collapsed ? 'fa-chevron-right' : 'fa-chevron-left'}`} />
             </button>
           )}
         </div>
@@ -101,7 +101,7 @@ export default function DashboardLayout({ children, title }) {
               onClick={() => isMobile && setMobileOpen(false)}
               style={({ isActive }) => ({ ...s.navItem, ...(isActive ? s.navActive : {}) })}
             >
-              <span style={s.navIcon}>{item.icon}</span>
+              <span style={s.navIcon}><i className={`fa-solid ${item.icon}`} /></span>
               {!collapsed && <span style={s.navLabel}>{item.label}</span>}
             </NavLink>
           ))}
@@ -130,7 +130,7 @@ export default function DashboardLayout({ children, title }) {
             </button>
           )}
           <div style={s.greeting}>
-            <span style={s.greetName}>👋 Hello, {user?.name}</span>
+            <span style={s.greetName}><i className="fa-solid fa-hand-wave" style={{ marginRight: 6, color: colors.secondary }} />Hello, {user?.name}</span>
             {!isMobile && <span style={s.greetDate}>
               {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
             </span>}
@@ -141,7 +141,7 @@ export default function DashboardLayout({ children, title }) {
               <span style={s.userName}>{user?.name}</span>
               <span style={s.userEmail}>{user?.email}</span>
             </div>}
-            <button onClick={handleLogout} style={s.logoutBtn}>Logout</button>
+            <button onClick={handleLogout} style={s.logoutBtn}><i className="fa-solid fa-right-from-bracket" style={{ marginRight: 6 }} />Logout</button>
           </div>
         </header>
 
@@ -154,7 +154,7 @@ export default function DashboardLayout({ children, title }) {
         {/* Footer — always at bottom */}
         <footer style={footerStyle}>
           <div style={footerInnerStyle}>
-            <span style={s.footerBrand}>🎓 CertSystem</span>
+            <span style={s.footerBrand}><i className="fa-solid fa-graduation-cap" style={{ marginRight: 6 }} />CertSystem</span>
             <span style={s.footerText}>
               Need a certificate? <a href="mailto:ukwitegetsev9@gmail.com" style={s.footerLink}>support@certsystem.com</a>
             </span>
