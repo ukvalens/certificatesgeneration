@@ -222,6 +222,10 @@ img {
     display: flex !important;
   }
 
+  .nav-auth-mobile {
+    display: flex !important;
+  }
+
   .nav-collapse {
     display: none;
     flex-direction: column;

@@ -43,6 +43,13 @@ export default function Navbar() {
     <nav className="navbar" style={styles.nav}>
       <div style={styles.navTop}>
         <Link to="/" style={styles.brand} onClick={close}>{brand}</Link>
+        {/* Always show login/register on mobile top bar for non-logged-in users */}
+        {!user && (
+          <div className="nav-auth-mobile" style={styles.authMobile}>
+            <Link to="/login" onClick={close} style={styles.loginMobileBtn}><i className="fa-solid fa-right-to-bracket" style={{ marginRight: 5 }}></i>Login</Link>
+            <Link to="/register" onClick={close} style={styles.registerMobileBtn}><i className="fa-solid fa-user-plus" style={{ marginRight: 5 }}></i>Register</Link>
+          </div>
+        )}
         <button className="nav-hamburger" style={styles.hamburger} onClick={() => setMenuOpen(o => !o)} aria-label="Toggle menu">
           <i className={`fa-solid ${menuOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
         </button>
@@ -77,6 +84,9 @@ const styles = {
   nav: { background: colors.primary, padding: '0 24px', position: 'relative' },
   navTop: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 60 },
   brand: { color: colors.surface, fontWeight: 'bold', fontSize: 20, textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 },
+  authMobile: { display: 'none', alignItems: 'center', gap: 8, marginLeft: 'auto', marginRight: 8 },
+  loginMobileBtn: { color: 'rgba(255,255,255,0.9)', textDecoration: 'none', padding: '6px 10px', borderRadius: 6, fontSize: 13, whiteSpace: 'nowrap' },
+  registerMobileBtn: { background: colors.surface, color: colors.primary, textDecoration: 'none', padding: '6px 10px', borderRadius: 6, fontSize: 13, fontWeight: 'bold', whiteSpace: 'nowrap' },
   hamburger: { display: 'none', background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: colors.surface, borderRadius: 6, width: 38, height: 38, cursor: 'pointer', fontSize: 16, alignItems: 'center', justifyContent: 'center' },
   links: { display: 'flex', gap: 4, flexWrap: 'wrap' },
   right: { display: 'flex', alignItems: 'center', gap: 10, marginLeft: 'auto', flexWrap: 'wrap' },
