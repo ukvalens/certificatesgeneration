@@ -49,7 +49,8 @@ export default function Verify() {
             <div className="verify-result-grid" style={styles.grid}>
               <Field label="Recipient" value={result.user_name} />
               <Field label="Email" value={result.email || '—'} />
-              <Field label="Certificate Type" value={result.certificate_type} />
+              {result.category && <Field label="Certificate Type" value={result.category} />}
+              <Field label="Course" value={result.certificate_type} />
               <Field label="Issue Date" value={new Date(result.issue_date).toLocaleDateString()} />
               <Field label="Certificate Code" value={result.certificate_code} mono />
             </div>
