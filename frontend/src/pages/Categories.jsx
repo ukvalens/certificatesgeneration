@@ -35,7 +35,7 @@ export default function Categories() {
     if (confirm('Delete this category?')) deleteCategory(id).then(load);
   };
 
-  const typesFor = (categoryId) => types.filter(t => t.category_id === categoryId);
+  const typesFor = (categoryId) => types.filter(t => Number(t.category_id) === Number(categoryId));
   const unassigned = types.filter(t => !t.category_id);
 
   return (
