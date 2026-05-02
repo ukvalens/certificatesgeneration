@@ -37,9 +37,16 @@ const login = async (req, res) => {
 };
 
 const getMe = async (req, res) => {
-  const result = await pool.query('SELECT id, name, email, role FROM users WHERE id=$1', [req.user.id]);
-  if (!result.rows.length) return res.status(404).json({ error: 'User not found' });
-  res.json(result.rows[0]);
+  try {
+    const result = await pool.query('SELECT id, name, email, role FROM users WHERE id=$1', [req.user.id]);
+    if (!result.rows.length) return res.status(404).json({ error: 'User not found' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    if (err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED') {
+      return res.status(503).json({ error: 'Database connection error, please try again' });
+    }
+    throw err;
+  }
 };
 
 const forgotPassword = async (req, res) => {
