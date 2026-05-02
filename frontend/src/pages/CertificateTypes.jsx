@@ -10,7 +10,7 @@ export default function CertificateTypes() {
   const [editId, setEditId] = useState(null);
   const [editRow, setEditRow] = useState({ name: '', category_id: '', description: '' });
   const [page, setPage] = useState(1);
-  const PAGE_SIZE = 10;
+  const PAGE_SIZE = 5;
 
   const load = () => Promise.all([getCertificateTypes(), getCategories()]).then(([t, c]) => {
     setTypes(t.data);

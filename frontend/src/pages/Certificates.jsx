@@ -4,7 +4,7 @@ import DashboardLayout from '../components/DashboardLayout';
 import Pagination from '../components/Pagination';
 import { colors, shadows } from '../theme';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 5;
 
 export default function Certificates() {
   const [certificates, setCertificates] = useState([]);
