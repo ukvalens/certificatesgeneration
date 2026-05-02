@@ -9,6 +9,7 @@ const roleMenus = {
     { icon: '🎓', label: 'Certificates', to: '/certificates' },
     { icon: '📋', label: 'Courses', to: '/certificate-types' },
     { icon: '🗂️', label: 'Certificate Types', to: '/categories' },
+    { icon: '👥', label: 'Users', to: '/users' },
     { icon: '🔍', label: 'Verify', to: '/verify' },
   ],
   issuer: [

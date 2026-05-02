@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { colors } from '../theme';
 
 export default function Register() {
-  const [form, setForm] = useState({ name: '', email: '', password: '', role: 'recipient' });
+  const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { loginUser } = useAuth();
@@ -36,11 +36,6 @@ export default function Register() {
           <input style={styles.input} placeholder="Full Name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required />
           <input style={styles.input} type="email" placeholder="Email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required />
           <input style={styles.input} type="password" placeholder="Password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} required />
-          <select style={styles.input} value={form.role} onChange={e => setForm({ ...form, role: e.target.value })}>
-            <option value="recipient">Recipient</option>
-            <option value="issuer">Certificate Issuer</option>
-            <option value="admin">Admin</option>
-          </select>
           <button style={styles.btn} type="submit" disabled={loading}>{loading ? 'Creating...' : 'Create Account'}</button>
         </form>
         <p style={styles.link}>Already have an account? <Link to="/login">Sign In</Link></p>

@@ -16,6 +16,7 @@ import Categories from './pages/Categories';
 import Verify from './pages/Verify';
 import IssuerDashboard from './pages/IssuerDashboard';
 import RecipientDashboard from './pages/RecipientDashboard';
+import UserManagement from './pages/UserManagement';
 
 const dashboardPaths = ['/dashboard', '/certificates', '/certificate-types', '/categories'];
 
@@ -88,6 +89,7 @@ function Layout() {
           <Route path="/certificates" element={<ProtectedRoute roles={['admin']}><Certificates /></ProtectedRoute>} />
           <Route path="/certificate-types" element={<ProtectedRoute roles={['admin']}><CertificateTypes /></ProtectedRoute>} />
           <Route path="/categories" element={<ProtectedRoute roles={['admin']}><Categories /></ProtectedRoute>} />
+          <Route path="/users" element={<ProtectedRoute roles={['admin']}><UserManagement /></ProtectedRoute>} />
         </Routes>
       </div>
       {!hideGlobalLayout && <Footer />}

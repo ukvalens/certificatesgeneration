@@ -7,15 +7,13 @@ const { sendMail } = require('../utils/mailer');
 const generateTokenHash = (token) => crypto.createHash('sha256').update(token).digest('hex');
 
 const register = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password } = req.body;
   if (!name || !email || !password) return res.status(400).json({ error: 'All fields are required' });
-  const validRoles = ['admin', 'issuer', 'recipient'];
-  const userRole = validRoles.includes(role) ? role : 'recipient';
   try {
     const hashed = await bcrypt.hash(password, 10);
     const result = await pool.query(
       'INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id, name, email, role',
-      [name, email, hashed, userRole]
+      [name, email, hashed, 'recipient']
     );
     const user = result.rows[0];
     const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });

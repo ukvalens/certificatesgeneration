@@ -14,6 +14,11 @@ export const getMe = () => API.get('/auth/me');
 export const forgotPassword = (data) => API.post('/auth/forgot-password', data);
 export const resetPassword = (data) => API.post('/auth/reset-password', data);
 
+export const getUsers = () => API.get('/users');
+export const updateUserRole = (id, role) => API.put(`/users/${id}/role`, { role });
+export const adminResetPassword = (id, password) => API.put(`/users/${id}/password`, { password });
+export const deleteUser = (id) => API.delete(`/users/${id}`);
+
 export const getCategories = () => API.get('/categories');
 export const createCategory = (data) => API.post('/categories', data);
 export const updateCategory = (id, data) => API.put(`/categories/${id}`, data);
