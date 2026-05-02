@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { getCertificates, getCertificateTypes, createCertificate, downloadCertificate } from '../api';
 import DashboardLayout from '../components/DashboardLayout';
+import Pagination from '../components/Pagination';
 import { colors, shadows } from '../theme';
+
+const PAGE_SIZE = 10;
 
 export default function IssuerDashboard() {
   const [certificates, setCertificates] = useState([]);
@@ -9,13 +12,11 @@ export default function IssuerDashboard() {
   const [form, setForm] = useState({ user_name: '', email: '', certificate_type_id: '', description: '', issue_date: '' });
   const [search, setSearch] = useState('');
   const [success, setSuccess] = useState('');
+  const [page, setPage] = useState(1);
 
   const load = () => getCertificates().then(r => setCertificates(r.data));
 
-  useEffect(() => {
-    load();
-    getCertificateTypes().then(r => setTypes(r.data));
-  }, []);
+  useEffect(() => { load(); getCertificateTypes().then(r => setTypes(r.data)); }, []);
 
   const handleIssue = () => {
     if (!form.user_name.trim() || !form.certificate_type_id) return alert('Name and type are required');
@@ -23,7 +24,7 @@ export default function IssuerDashboard() {
       setForm({ user_name: '', email: '', certificate_type_id: '', description: '', issue_date: '' });
       setSuccess('Certificate issued successfully!');
       setTimeout(() => setSuccess(''), 3000);
-      load();
+      setPage(1); load();
     });
   };
 
@@ -31,6 +32,10 @@ export default function IssuerDashboard() {
     c.user_name.toLowerCase().includes(search.toLowerCase()) ||
     c.certificate_code.toLowerCase().includes(search.toLowerCase())
   );
+
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const handleSearch = (val) => { setSearch(val); setPage(1); };
 
   return (
     <DashboardLayout title="Issue Certificates">
@@ -47,38 +52,37 @@ export default function IssuerDashboard() {
             <option value="">Select Course *</option>
             {types.map(t => <option key={t.id} value={t.id}>{t.name}{t.category_name ? ` — ${t.category_name}` : ''}</option>)}
           </select>
-          {form.description ? (
-            <div style={styles.descPreview}>{form.description}</div>
-          ) : null}
+          {form.description ? <div style={styles.descPreview}>{form.description}</div> : null}
           <input type="date" value={form.issue_date} onChange={e => setForm({ ...form, issue_date: e.target.value })} style={styles.input} />
           <button onClick={handleIssue} style={styles.btn}>Issue Certificate</button>
         </div>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '24px 0 12px' }}>
+      <div className="responsive-toolbar" style={{ margin: '24px 0 12px' }}>
         <h2 style={styles.cardTitle}>Issued Certificates ({filtered.length})</h2>
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..." style={{ ...styles.input, maxWidth: 260 }} />
+        <input value={search} onChange={e => handleSearch(e.target.value)} placeholder="Search..." style={{ ...styles.input, maxWidth: 260 }} />
       </div>
 
       <div className="table-responsive">
         <table style={styles.table}>
-        <thead>
-          <tr>{['Name', 'Email', 'Course', 'Code', 'Date', 'PDF'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
-        </thead>
-        <tbody>
-          {filtered.map(c => (
-            <tr key={c.id}>
-              <td style={styles.td}>{c.user_name}</td>
-              <td style={styles.td}>{c.email || '—'}</td>
-              <td style={styles.td}>{c.certificate_type}</td>
-              <td style={styles.td}><code style={styles.code}>{c.certificate_code}</code></td>
-              <td style={styles.td}>{new Date(c.issue_date).toLocaleDateString()}</td>
-              <td style={styles.td}><a href={downloadCertificate(c.id)} target="_blank" rel="noreferrer" style={styles.dlBtn}>PDF</a></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          <thead>
+            <tr>{['Name', 'Email', 'Course', 'Code', 'Date', 'PDF'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
+          </thead>
+          <tbody>
+            {paginated.map(c => (
+              <tr key={c.id}>
+                <td style={styles.td}>{c.user_name}</td>
+                <td style={styles.td}>{c.email || '—'}</td>
+                <td style={styles.td}>{c.certificate_type}</td>
+                <td style={styles.td}><code style={styles.code}>{c.certificate_code}</code></td>
+                <td style={styles.td}>{new Date(c.issue_date).toLocaleDateString()}</td>
+                <td style={styles.td}><a href={downloadCertificate(c.id)} target="_blank" rel="noreferrer" style={styles.dlBtn}>PDF</a></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
+      <Pagination page={page} totalPages={totalPages} onChange={setPage} />
     </DashboardLayout>
   );
 }

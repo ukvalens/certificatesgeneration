@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { getCertificates, getCertificateTypes, createCertificate, updateCertificate, deleteCertificate, downloadCertificate } from '../api';
 import DashboardLayout from '../components/DashboardLayout';
+import Pagination from '../components/Pagination';
 import { colors, shadows } from '../theme';
+
+const PAGE_SIZE = 10;
 
 export default function Certificates() {
   const [certificates, setCertificates] = useState([]);
@@ -10,47 +13,37 @@ export default function Certificates() {
   const [search, setSearch] = useState('');
   const [editId, setEditId] = useState(null);
   const [editRow, setEditRow] = useState({});
+  const [page, setPage] = useState(1);
 
   const load = () => getCertificates().then(r => setCertificates(r.data));
 
-  useEffect(() => {
-    load();
-    getCertificateTypes().then(r => setTypes(r.data));
-  }, []);
+  useEffect(() => { load(); getCertificateTypes().then(r => setTypes(r.data)); }, []);
 
   const handleIssue = () => {
     if (!form.user_name.trim() || !form.certificate_type_id) return alert('Name and course are required');
     createCertificate(form).then(() => {
       setForm({ user_name: '', email: '', organization: '', header_text: '', description: '', certificate_type_id: '', issue_date: '' });
-      load();
+      setPage(1); load();
     });
   };
 
   const handleEditStart = (c) => {
     setEditId(c.id);
-    setEditRow({
-      user_name: c.user_name,
-      email: c.email || '',
-      organization: c.organization || '',
-      header_text: c.header_text || '',
-      description: c.description || '',
-      certificate_type_id: c.certificate_type_id,
-      issue_date: c.issue_date ? c.issue_date.split('T')[0] : '',
-    });
+    setEditRow({ user_name: c.user_name, email: c.email || '', organization: c.organization || '', header_text: c.header_text || '', description: c.description || '', certificate_type_id: c.certificate_type_id, issue_date: c.issue_date ? c.issue_date.split('T')[0] : '' });
   };
 
-  const handleEditSave = (id) => {
-    updateCertificate(id, editRow).then(() => { setEditId(null); load(); });
-  };
-
-  const handleDelete = (id) => {
-    if (confirm('Delete this certificate?')) deleteCertificate(id).then(load);
-  };
+  const handleEditSave = (id) => { updateCertificate(id, editRow).then(() => { setEditId(null); load(); }); };
+  const handleDelete = (id) => { if (confirm('Delete this certificate?')) deleteCertificate(id).then(load); };
 
   const filtered = certificates.filter(c =>
     c.user_name.toLowerCase().includes(search.toLowerCase()) ||
     c.certificate_code.toLowerCase().includes(search.toLowerCase())
   );
+
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const handleSearch = (val) => { setSearch(val); setPage(1); };
 
   return (
     <DashboardLayout title="Certificates">
@@ -75,49 +68,50 @@ export default function Certificates() {
       </div>
 
       <div className="responsive-toolbar" style={{ margin: '24px 0 12px' }}>
-        <h2 style={styles.subtitle}>Issued Certificates</h2>
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by name or code..." style={{ ...styles.input, maxWidth: 280 }} />
+        <h2 style={styles.subtitle}>Issued Certificates ({filtered.length})</h2>
+        <input value={search} onChange={e => handleSearch(e.target.value)} placeholder="Search by name or code..." style={{ ...styles.input, maxWidth: 280 }} />
       </div>
 
       <div className="table-responsive">
         <table style={styles.table}>
-        <thead>
-          <tr>{['Name', 'Email', 'Course', 'Code', 'Date', 'Actions'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
-        </thead>
-        <tbody>
-          {filtered.map(c => editId === c.id ? (
-            <tr key={c.id} style={{ background: colors.light }}>
-              <td style={styles.td}><input value={editRow.user_name} onChange={e => setEditRow({ ...editRow, user_name: e.target.value })} style={styles.inlineInput} /></td>
-              <td style={styles.td}><input value={editRow.email} onChange={e => setEditRow({ ...editRow, email: e.target.value })} style={styles.inlineInput} /></td>
-              <td style={styles.td}>
-                <select value={editRow.certificate_type_id} onChange={e => setEditRow({ ...editRow, certificate_type_id: e.target.value })} style={styles.inlineInput}>
-                  {types.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
-                </select>
-              </td>
-              <td style={styles.td}><code style={styles.code}>{c.certificate_code}</code></td>
-              <td style={styles.td}><input type="date" value={editRow.issue_date} onChange={e => setEditRow({ ...editRow, issue_date: e.target.value })} style={styles.inlineInput} /></td>
-              <td style={styles.td}>
-                <button onClick={() => handleEditSave(c.id)} style={styles.saveBtn}>Save</button>
-                <button onClick={() => setEditId(null)} style={styles.cancelBtn}>Cancel</button>
-              </td>
-            </tr>
-          ) : (
-            <tr key={c.id}>
-              <td style={styles.td}>{c.user_name}</td>
-              <td style={styles.td}>{c.email || '—'}</td>
-              <td style={styles.td}>{c.certificate_type}</td>
-              <td style={styles.td}><code style={styles.code}>{c.certificate_code}</code></td>
-              <td style={styles.td}>{new Date(c.issue_date).toLocaleDateString()}</td>
-              <td style={styles.td}>
-                <button onClick={() => handleEditStart(c)} style={styles.editBtn}>Edit</button>
-                <a href={downloadCertificate(c.id)} target="_blank" rel="noreferrer" style={styles.dlBtn}>PDF</a>
-                <button onClick={() => handleDelete(c.id)} style={styles.delBtn}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          <thead>
+            <tr>{['Name', 'Email', 'Course', 'Code', 'Date', 'Actions'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
+          </thead>
+          <tbody>
+            {paginated.map(c => editId === c.id ? (
+              <tr key={c.id} style={{ background: colors.light }}>
+                <td style={styles.td}><input value={editRow.user_name} onChange={e => setEditRow({ ...editRow, user_name: e.target.value })} style={styles.inlineInput} /></td>
+                <td style={styles.td}><input value={editRow.email} onChange={e => setEditRow({ ...editRow, email: e.target.value })} style={styles.inlineInput} /></td>
+                <td style={styles.td}>
+                  <select value={editRow.certificate_type_id} onChange={e => setEditRow({ ...editRow, certificate_type_id: e.target.value })} style={styles.inlineInput}>
+                    {types.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+                  </select>
+                </td>
+                <td style={styles.td}><code style={styles.code}>{c.certificate_code}</code></td>
+                <td style={styles.td}><input type="date" value={editRow.issue_date} onChange={e => setEditRow({ ...editRow, issue_date: e.target.value })} style={styles.inlineInput} /></td>
+                <td style={styles.td}>
+                  <button onClick={() => handleEditSave(c.id)} style={styles.saveBtn}>Save</button>
+                  <button onClick={() => setEditId(null)} style={styles.cancelBtn}>Cancel</button>
+                </td>
+              </tr>
+            ) : (
+              <tr key={c.id}>
+                <td style={styles.td}>{c.user_name}</td>
+                <td style={styles.td}>{c.email || '—'}</td>
+                <td style={styles.td}>{c.certificate_type}</td>
+                <td style={styles.td}><code style={styles.code}>{c.certificate_code}</code></td>
+                <td style={styles.td}>{new Date(c.issue_date).toLocaleDateString()}</td>
+                <td style={styles.td}>
+                  <button onClick={() => handleEditStart(c)} style={styles.editBtn}>Edit</button>
+                  <a href={downloadCertificate(c.id)} target="_blank" rel="noreferrer" style={styles.dlBtn}>PDF</a>
+                  <button onClick={() => handleDelete(c.id)} style={styles.delBtn}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
+      <Pagination page={page} totalPages={totalPages} onChange={setPage} />
     </DashboardLayout>
   );
 }

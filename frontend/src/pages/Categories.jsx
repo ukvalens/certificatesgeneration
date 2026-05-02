@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { getCategories, createCategory, updateCategory, deleteCategory, getCertificateTypes } from '../api';
 import DashboardLayout from '../components/DashboardLayout';
+import Pagination from '../components/Pagination';
 import { colors, shadows } from '../theme';
+
+const PAGE_SIZE = 5;
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
@@ -9,6 +12,7 @@ export default function Categories() {
   const [name, setName] = useState('');
   const [editId, setEditId] = useState(null);
   const [editName, setEditName] = useState('');
+  const [page, setPage] = useState(1);
 
   const load = () => Promise.all([
     getCategories(),
@@ -23,7 +27,7 @@ export default function Categories() {
   const handleAdd = () => {
     if (!name.trim()) return alert('Certificate type name is required');
     createCategory({ name: name.trim() })
-      .then(() => { setName(''); load(); })
+      .then(() => { setName(''); setPage(1); load(); })
       .catch(err => alert(err.response?.data?.error || 'Failed to add certificate type'));
   };
 
@@ -37,6 +41,8 @@ export default function Categories() {
 
   const coursesFor = (categoryId) => types.filter(t => Number(t.category_id) === Number(categoryId));
   const unassigned = types.filter(t => !t.category_id);
+  const totalPages = Math.ceil(categories.length / PAGE_SIZE);
+  const paginated = categories.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <DashboardLayout title="Certificate Types">
@@ -46,7 +52,7 @@ export default function Categories() {
       </div>
 
       <div style={styles.list}>
-        {categories.map(c => (
+        {paginated.map(c => (
           <div key={c.id} style={styles.card}>
             <div style={styles.cardHeader}>
               {editId === c.id ? (
@@ -100,6 +106,7 @@ export default function Categories() {
           <div style={styles.empty}>No certificate types yet. Add one above.</div>
         )}
       </div>
+      <Pagination page={page} totalPages={totalPages} onChange={setPage} />
     </DashboardLayout>
   );
 }
