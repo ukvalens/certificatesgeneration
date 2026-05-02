@@ -21,10 +21,10 @@ export default function Categories() {
   useEffect(() => { load(); }, []);
 
   const handleAdd = () => {
-    if (!name.trim()) return alert('Category name is required');
+    if (!name.trim()) return alert('Certificate type name is required');
     createCategory({ name: name.trim() })
       .then(() => { setName(''); load(); })
-      .catch(err => alert(err.response?.data?.error || 'Failed to add category'));
+      .catch(err => alert(err.response?.data?.error || 'Failed to add certificate type'));
   };
 
   const handleEditSave = (id) => {
@@ -32,17 +32,17 @@ export default function Categories() {
   };
 
   const handleDelete = (id) => {
-    if (confirm('Delete this category?')) deleteCategory(id).then(load);
+    if (confirm('Delete this certificate type?')) deleteCategory(id).then(load);
   };
 
-  const typesFor = (categoryId) => types.filter(t => Number(t.category_id) === Number(categoryId));
+  const coursesFor = (categoryId) => types.filter(t => Number(t.category_id) === Number(categoryId));
   const unassigned = types.filter(t => !t.category_id);
 
   return (
-    <DashboardLayout title="Categories">
+    <DashboardLayout title="Certificate Types">
       <div className="responsive-form" style={styles.form}>
-        <input value={name} onChange={e => setName(e.target.value)} placeholder="Category name" style={styles.input} onKeyDown={e => e.key === 'Enter' && handleAdd()} />
-        <button onClick={handleAdd} style={styles.btn}>Add Category</button>
+        <input value={name} onChange={e => setName(e.target.value)} placeholder="Certificate type name (e.g. Networking)" style={styles.input} onKeyDown={e => e.key === 'Enter' && handleAdd()} />
+        <button onClick={handleAdd} style={styles.btn}>Add Certificate Type</button>
       </div>
 
       <div style={styles.list}>
@@ -61,7 +61,7 @@ export default function Categories() {
                 <>
                   <div>
                     <span style={styles.catName}>{c.name}</span>
-                    <span style={styles.countBadge}>{typesFor(c.id).length} type{typesFor(c.id).length !== 1 ? 's' : ''}</span>
+                    <span style={styles.countBadge}>{coursesFor(c.id).length} course{coursesFor(c.id).length !== 1 ? 's' : ''}</span>
                   </div>
                   <div style={styles.actions}>
                     <button onClick={() => { setEditId(c.id); setEditName(c.name); }} style={styles.editBtn}>Edit</button>
@@ -70,9 +70,9 @@ export default function Categories() {
                 </>
               )}
             </div>
-            {typesFor(c.id).length > 0 && (
+            {coursesFor(c.id).length > 0 && (
               <div style={styles.typeList}>
-                {typesFor(c.id).map(t => (
+                {coursesFor(c.id).map(t => (
                   <span key={t.id} style={styles.typeTag}>{t.name}</span>
                 ))}
               </div>
@@ -85,7 +85,7 @@ export default function Categories() {
             <div style={styles.cardHeader}>
               <div>
                 <span style={{ ...styles.catName, color: colors.muted }}>Uncategorized</span>
-                <span style={styles.countBadge}>{unassigned.length} type{unassigned.length !== 1 ? 's' : ''}</span>
+                <span style={styles.countBadge}>{unassigned.length} course{unassigned.length !== 1 ? 's' : ''}</span>
               </div>
             </div>
             <div style={styles.typeList}>
@@ -97,7 +97,7 @@ export default function Categories() {
         )}
 
         {categories.length === 0 && (
-          <div style={styles.empty}>No categories yet. Add one above.</div>
+          <div style={styles.empty}>No certificate types yet. Add one above.</div>
         )}
       </div>
     </DashboardLayout>

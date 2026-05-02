@@ -41,8 +41,8 @@ export default function IssuerDashboard() {
           <input value={form.user_name} onChange={e => setForm({ ...form, user_name: e.target.value })} placeholder="Recipient Name *" style={styles.input} />
           <input value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="Recipient Email" style={styles.input} />
           <select value={form.certificate_type_id} onChange={e => setForm({ ...form, certificate_type_id: e.target.value })} style={styles.input}>
-            <option value="">Select Certificate Type *</option>
-            {types.map(t => <option key={t.id} value={t.id}>{t.name}{t.category_name ? ` (${t.category_name})` : ''}</option>)}
+            <option value="">Select Course *</option>
+            {types.map(t => <option key={t.id} value={t.id}>{t.name}{t.category_name ? ` — ${t.category_name}` : ''}</option>)}
           </select>
           <input type="date" value={form.issue_date} onChange={e => setForm({ ...form, issue_date: e.target.value })} style={styles.input} />
           <button onClick={handleIssue} style={styles.btn}>Issue Certificate</button>
@@ -57,7 +57,7 @@ export default function IssuerDashboard() {
       <div className="table-responsive">
         <table style={styles.table}>
         <thead>
-          <tr>{['Name', 'Email', 'Type', 'Code', 'Date', 'PDF'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
+          <tr>{['Name', 'Email', 'Course', 'Code', 'Date', 'PDF'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
         </thead>
         <tbody>
           {filtered.map(c => (

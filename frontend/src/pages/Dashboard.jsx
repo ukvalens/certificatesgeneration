@@ -20,14 +20,14 @@ export default function Dashboard() {
     <DashboardLayout title="Admin Overview">
       <div className="card-grid" style={styles.cards}>
         <StatCard label="Total Certificates" value={stats.certificates} color={colors.primary} icon="🎓" />
-        <StatCard label="Certificate Types" value={stats.types} color={colors.secondary} icon="📋" />
-        <StatCard label="Categories" value={stats.categories} color={colors.dark} icon="🗂️" />
+        <StatCard label="Courses" value={stats.types} color={colors.secondary} icon="📚" />
+        <StatCard label="Certificate Types" value={stats.categories} color={colors.dark} icon="🗂️" />
       </div>
       <h2 style={styles.subtitle}>Recent Certificates</h2>
       <div className="table-responsive">
         <table style={styles.table}>
         <thead>
-          <tr>{['Name', 'Type', 'Category', 'Code', 'Date'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
+          <tr>{['Name', 'Course', 'Certificate Type', 'Code', 'Date'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
         </thead>
         <tbody>
           {recent.map(c => (

@@ -19,7 +19,7 @@ export default function Certificates() {
   }, []);
 
   const handleIssue = () => {
-    if (!form.user_name.trim() || !form.certificate_type_id) return alert('Name and type are required');
+    if (!form.user_name.trim() || !form.certificate_type_id) return alert('Name and course are required');
     createCertificate(form).then(() => {
       setForm({ user_name: '', email: '', organization: '', header_text: '', description: '', certificate_type_id: '', issue_date: '' });
       load();
@@ -63,7 +63,7 @@ export default function Certificates() {
           <input value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="Email (optional)" style={styles.input} />
           <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Certificate description" style={styles.textarea} />
           <select value={form.certificate_type_id} onChange={e => setForm({ ...form, certificate_type_id: e.target.value })} style={styles.input}>
-            <option value="">Select Certificate Type *</option>
+            <option value="">Select Course *</option>
             {types.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
           </select>
           <input type="date" value={form.issue_date} onChange={e => setForm({ ...form, issue_date: e.target.value })} style={styles.input} />
@@ -79,7 +79,7 @@ export default function Certificates() {
       <div className="table-responsive">
         <table style={styles.table}>
         <thead>
-          <tr>{['Name', 'Email', 'Type', 'Code', 'Date', 'Actions'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
+          <tr>{['Name', 'Email', 'Course', 'Code', 'Date', 'Actions'].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
         </thead>
         <tbody>
           {filtered.map(c => editId === c.id ? (

@@ -8,8 +8,8 @@ const roleMenus = {
   admin: [
     { icon: '📊', label: 'Overview', to: '/dashboard' },
     { icon: '🎓', label: 'Certificates', to: '/certificates' },
-    { icon: '📋', label: 'Certificate Types', to: '/certificate-types' },
-    { icon: '🗂️', label: 'Categories', to: '/categories' },
+    { icon: '📋', label: 'Courses', to: '/certificate-types' },
+    { icon: '🗂️', label: 'Certificate Types', to: '/categories' },
     { icon: '🔍', label: 'Verify', to: '/verify' },
   ],
   issuer: [

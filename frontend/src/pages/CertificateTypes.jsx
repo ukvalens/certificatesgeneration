@@ -18,7 +18,7 @@ export default function CertificateTypes() {
   useEffect(() => { load(); }, []);
 
   const handleAdd = () => {
-    if (!form.name.trim()) return alert('Type name is required');
+    if (!form.name.trim()) return alert('Course name is required');
     createCertificateType({ ...form, category_id: form.category_id || null })
       .then(() => { setForm({ name: '', category_id: '', description: '' }); load(); })
       .catch(err => alert(err.response?.data?.error || 'Failed to add type'));
@@ -30,29 +30,29 @@ export default function CertificateTypes() {
   };
 
   const handleDelete = (id) => {
-    if (confirm('Delete this certificate type?')) deleteCertificateType(id).then(load);
+    if (confirm('Delete this course?')) deleteCertificateType(id).then(load);
   };
 
   return (
-    <DashboardLayout title="Certificate Types">
+    <DashboardLayout title="Courses">
       <div style={styles.formCard}>
-        <h2 style={styles.formTitle}>Add Certificate Type</h2>
+        <h2 style={styles.formTitle}>Add Course</h2>
         <div className="responsive-form" style={styles.form}>
-          <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Type name *" style={styles.input} />
+          <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Course name (e.g. CCNA, IT Essentials)" style={styles.input} />
           <select value={form.category_id} onChange={e => setForm({ ...form, category_id: e.target.value })} style={styles.input}>
-            <option value="">— Select Category —</option>
+            <option value="">— Select Certificate Type —</option>
             {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
           <input value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Description (optional)" style={styles.input} />
         </div>
-        <button onClick={handleAdd} style={styles.btn}>Add Type</button>
+        <button onClick={handleAdd} style={styles.btn}>Add Course</button>
       </div>
       <div className="table-responsive">
         <table style={styles.table}>
           <thead>
             <tr>
-              <th style={styles.th}>Name</th>
-              <th style={styles.th}>Category</th>
+              <th style={styles.th}>Course</th>
+              <th style={styles.th}>Certificate Type</th>
               <th style={styles.th}>Description</th>
               <th style={styles.th}>Actions</th>
             </tr>
@@ -63,7 +63,7 @@ export default function CertificateTypes() {
                 <td style={styles.td}><input value={editRow.name} onChange={e => setEditRow({ ...editRow, name: e.target.value })} style={styles.inlineInput} /></td>
                 <td style={styles.td}>
                   <select value={editRow.category_id} onChange={e => setEditRow({ ...editRow, category_id: e.target.value })} style={styles.inlineInput}>
-                    <option value="">No Category</option>
+                    <option value="">— Select Certificate Type —</option>
                     {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
                 </td>

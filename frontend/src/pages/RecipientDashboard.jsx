@@ -39,6 +39,7 @@ export default function RecipientDashboard() {
               <div key={c.id} style={styles.card}>
                 <div style={styles.cardIcon}>🎓</div>
                 <h3 style={styles.cardType}>{c.certificate_type}</h3>
+                <div style={styles.courseBadge}>{c.category || ''}</div>
                 <div style={styles.info}>
                   <div><span style={styles.label}>Issued to:</span> {c.user_name}</div>
                   <div><span style={styles.label}>Date:</span> {new Date(c.issue_date).toLocaleDateString()}</div>
@@ -64,7 +65,7 @@ const styles = {
   card: { background: colors.surface, borderRadius: 12, padding: 24, boxShadow: shadows.card },
   cardIcon: { fontSize: 36, marginBottom: 8 },
   cardType: { fontSize: 18, color: colors.dark, marginBottom: 8 },
-  badge: { background: colors.light, color: colors.primary, padding: '3px 10px', borderRadius: 20, fontSize: 12, display: 'inline-block', marginBottom: 12 },
+  courseBadge: { background: `${colors.primary}15`, color: colors.primary, fontSize: 12, padding: '3px 10px', borderRadius: 20, fontWeight: 500, display: 'inline-block', marginBottom: 12 },
   info: { fontSize: 13, color: colors.muted, lineHeight: 2, marginBottom: 16 },
   label: { fontWeight: 600, color: colors.dark },
   code: { background: colors.light, padding: '2px 6px', borderRadius: 4, fontSize: 12 },
