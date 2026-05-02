@@ -38,6 +38,7 @@ export default function Login() {
           <button style={styles.btn} type="submit" disabled={loading}>{loading ? 'Signing in...' : 'Sign In'}</button>
         </form>
         <p style={styles.link}>Don't have an account? <Link to="/register">Register</Link></p>
+        <p style={styles.link}><Link to="/">Back to Home</Link></p>
       </div>
     </div>
   );

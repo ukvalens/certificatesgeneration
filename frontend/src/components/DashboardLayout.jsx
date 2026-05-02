@@ -63,6 +63,28 @@ export default function DashboardLayout({ children, title }) {
     height: '100vh',
   };
 
+  const topbarStyle = {
+    ...styles.topbar,
+    flexDirection: isMobile ? 'column' : 'row',
+    alignItems: isMobile ? 'flex-start' : 'center',
+    padding: isMobile ? '16px 16px 12px' : '16px 28px',
+  };
+
+  const topRightStyle = {
+    ...styles.topRight,
+    width: isMobile ? '100%' : 'auto',
+    justifyContent: isMobile ? 'space-between' : 'flex-end',
+    flexWrap: 'wrap',
+  };
+
+  const greetingStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 4,
+    minWidth: 0,
+    width: isMobile ? '100%' : 'auto',
+  };
+
   const mainStyle = {
     ...styles.main,
     padding: isMobile ? '16px' : 28,
@@ -107,17 +129,17 @@ export default function DashboardLayout({ children, title }) {
       {/* Main area */}
       <div style={styles.main}>
         {/* Topbar */}
-        <header className="dashboard-topbar" style={styles.topbar}>
+        <header className="dashboard-topbar" style={topbarStyle}>
           {isMobile && (
             <button type="button" onClick={() => setIsMobileOpen(open => !open)} style={styles.mobileToggle}>
               <i className="fa-solid fa-bars"></i>
             </button>
           )}
-          <div>
+          <div style={greetingStyle}>
             <span style={styles.greeting}>👋 Hello, {user?.name}</span>
             <span style={styles.date}>{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
           </div>
-          <div className="dashboard-top-right" style={styles.topRight}>
+          <div className="dashboard-top-right" style={topRightStyle}>
             <div style={styles.avatar}>{user?.name?.[0]?.toUpperCase()}</div>
             <div style={styles.userInfo}>
               <span style={styles.userName}>{user?.name}</span>
