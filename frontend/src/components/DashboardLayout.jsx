@@ -39,6 +39,37 @@ export default function DashboardLayout({ children, title }) {
   const handleLogout = () => { logout(); navigate('/'); };
   const sidebarW = isMobile ? 220 : collapsed ? 60 : 220;
 
+  const topbarStyle = isMobile ? {
+    ...s.topbar,
+    height: 'auto',
+    minHeight: 56,
+    padding: '10px 14px',
+    flexWrap: 'wrap',
+    gap: 8,
+  } : s.topbar;
+
+  const topRightStyle = isMobile ? {
+    ...s.topRight,
+    gap: 8,
+  } : s.topRight;
+
+  const bodyStyle = isMobile ? {
+    ...s.body,
+    padding: '16px 12px',
+  } : s.body;
+
+  const footerStyle = isMobile ? {
+    ...s.footer,
+    padding: '10px 14px',
+  } : s.footer;
+
+  const footerInnerStyle = isMobile ? {
+    ...s.footerInner,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 4,
+  } : s.footerInner;
+
   return (
     <div style={s.root}>
 
@@ -91,7 +122,7 @@ export default function DashboardLayout({ children, title }) {
       <div style={s.main}>
 
         {/* Topbar */}
-        <header style={s.topbar}>
+        <header style={topbarStyle}>
           {isMobile && (
             <button onClick={() => setMobileOpen(o => !o)} style={s.menuBtn}>
               <i className={`fa-solid ${mobileOpen ? 'fa-xmark' : 'fa-bars'}`} />
@@ -99,29 +130,29 @@ export default function DashboardLayout({ children, title }) {
           )}
           <div style={s.greeting}>
             <span style={s.greetName}>👋 Hello, {user?.name}</span>
-            <span style={s.greetDate}>
+            {!isMobile && <span style={s.greetDate}>
               {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-            </span>
+            </span>}
           </div>
-          <div style={s.topRight}>
+          <div style={topRightStyle}>
             <div style={s.avatar}>{user?.name?.[0]?.toUpperCase()}</div>
-            <div style={s.userInfo}>
+            {!isMobile && <div style={s.userInfo}>
               <span style={s.userName}>{user?.name}</span>
               <span style={s.userEmail}>{user?.email}</span>
-            </div>
+            </div>}
             <button onClick={handleLogout} style={s.logoutBtn}>Logout</button>
           </div>
         </header>
 
         {/* Scrollable body */}
-        <main style={s.body}>
+        <main style={bodyStyle}>
           {title && <h1 style={s.pageTitle}>{title}</h1>}
           {children}
         </main>
 
         {/* Footer — always at bottom */}
-        <footer style={s.footer}>
-          <div style={s.footerInner}>
+        <footer style={footerStyle}>
+          <div style={footerInnerStyle}>
             <span style={s.footerBrand}>🎓 CertSystem</span>
             <span style={s.footerText}>
               Need a certificate? <a href="mailto:ukwitegetsev9@gmail.com" style={s.footerLink}>support@certsystem.com</a>
