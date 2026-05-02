@@ -62,7 +62,10 @@ export default function Certificates() {
           <input value={form.organization} onChange={e => setForm({ ...form, organization: e.target.value })} placeholder="Organization" style={styles.input} />
           <input value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="Email (optional)" style={styles.input} />
           <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Certificate description" style={styles.textarea} />
-          <select value={form.certificate_type_id} onChange={e => setForm({ ...form, certificate_type_id: e.target.value })} style={styles.input}>
+          <select value={form.certificate_type_id} onChange={e => {
+            const selected = types.find(t => String(t.id) === e.target.value);
+            setForm({ ...form, certificate_type_id: e.target.value, description: selected?.description || '' });
+          }} style={styles.input}>
             <option value="">Select Course *</option>
             {types.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
           </select>

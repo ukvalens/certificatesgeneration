@@ -6,7 +6,7 @@ import { colors, shadows } from '../theme';
 export default function IssuerDashboard() {
   const [certificates, setCertificates] = useState([]);
   const [types, setTypes] = useState([]);
-  const [form, setForm] = useState({ user_name: '', email: '', certificate_type_id: '', issue_date: '' });
+  const [form, setForm] = useState({ user_name: '', email: '', certificate_type_id: '', description: '', issue_date: '' });
   const [search, setSearch] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -20,7 +20,7 @@ export default function IssuerDashboard() {
   const handleIssue = () => {
     if (!form.user_name.trim() || !form.certificate_type_id) return alert('Name and type are required');
     createCertificate(form).then(() => {
-      setForm({ user_name: '', email: '', certificate_type_id: '', issue_date: '' });
+      setForm({ user_name: '', email: '', certificate_type_id: '', description: '', issue_date: '' });
       setSuccess('Certificate issued successfully!');
       setTimeout(() => setSuccess(''), 3000);
       load();
@@ -40,10 +40,16 @@ export default function IssuerDashboard() {
         <div className="responsive-form" style={styles.form}>
           <input value={form.user_name} onChange={e => setForm({ ...form, user_name: e.target.value })} placeholder="Recipient Name *" style={styles.input} />
           <input value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="Recipient Email" style={styles.input} />
-          <select value={form.certificate_type_id} onChange={e => setForm({ ...form, certificate_type_id: e.target.value })} style={styles.input}>
+          <select value={form.certificate_type_id} onChange={e => {
+            const selected = types.find(t => String(t.id) === e.target.value);
+            setForm({ ...form, certificate_type_id: e.target.value, description: selected?.description || '' });
+          }} style={styles.input}>
             <option value="">Select Course *</option>
             {types.map(t => <option key={t.id} value={t.id}>{t.name}{t.category_name ? ` — ${t.category_name}` : ''}</option>)}
           </select>
+          {form.description ? (
+            <div style={styles.descPreview}>{form.description}</div>
+          ) : null}
           <input type="date" value={form.issue_date} onChange={e => setForm({ ...form, issue_date: e.target.value })} style={styles.input} />
           <button onClick={handleIssue} style={styles.btn}>Issue Certificate</button>
         </div>
@@ -84,6 +90,7 @@ const styles = {
   input: { flex: 1, minWidth: 160, padding: '10px 14px', border: `1px solid ${colors.border}`, borderRadius: 6, fontSize: 14, color: colors.dark },
   btn: { background: colors.secondary, color: colors.surface, border: 'none', padding: '10px 20px', borderRadius: 6, cursor: 'pointer', fontSize: 14 },
   dlBtn: { background: colors.primary, color: colors.surface, padding: '5px 10px', borderRadius: 4, fontSize: 12, textDecoration: 'none' },
+  descPreview: { flex: '1 1 100%', background: colors.light, color: colors.muted, padding: '8px 14px', borderRadius: 6, fontSize: 13, fontStyle: 'italic' },
   success: { background: 'rgba(17, 31, 77, 0.08)', color: colors.primary, padding: '10px 14px', borderRadius: 6, marginBottom: 16, fontSize: 14 },
   code: { background: colors.light, padding: '2px 6px', borderRadius: 4, fontSize: 12 },
   table: { width: '100%', borderCollapse: 'collapse', background: colors.surface, borderRadius: 10, overflow: 'hidden', boxShadow: shadows.panel },
