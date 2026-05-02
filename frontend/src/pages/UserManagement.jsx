@@ -49,22 +49,18 @@ export default function UserManagement() {
     <DashboardLayout title="User Management">
 
       {/* Stats row */}
-      <div style={styles.statsRow}>
+      <div className="card-grid" style={{ marginBottom: 24 }}>
         {ROLES.map(r => (
-          <div key={r} style={styles.statCard}>
-            <div style={{ ...styles.statDot, background: roleBadgeColor[r] }} />
-            <div>
-              <div style={styles.statNum}>{users.filter(u => u.role === r).length}</div>
-              <div style={styles.statLabel}>{r.charAt(0).toUpperCase() + r.slice(1)}s</div>
-            </div>
+          <div key={r} className="stat-card" style={{ ...styles.statCard, borderTop: `4px solid ${roleBadgeColor[r]}` }}>
+            <i className={`fa-solid ${r === 'admin' ? 'fa-user-shield' : r === 'issuer' ? 'fa-user-pen' : 'fa-user'}`} style={{ fontSize: 24, color: roleBadgeColor[r], marginBottom: 8 }} />
+            <div style={styles.statNum}>{users.filter(u => u.role === r).length}</div>
+            <div style={styles.statLabel}>{r.charAt(0).toUpperCase() + r.slice(1)}s</div>
           </div>
         ))}
-        <div style={styles.statCard}>
-          <div style={{ ...styles.statDot, background: '#0f766e' }} />
-          <div>
-            <div style={styles.statNum}>{users.length}</div>
-            <div style={styles.statLabel}>Total Users</div>
-          </div>
+        <div className="stat-card" style={{ ...styles.statCard, borderTop: `4px solid #0f766e` }}>
+          <i className="fa-solid fa-users" style={{ fontSize: 24, color: '#0f766e', marginBottom: 8 }} />
+          <div style={styles.statNum}>{users.length}</div>
+          <div style={styles.statLabel}>Total Users</div>
         </div>
       </div>
 
@@ -107,9 +103,11 @@ export default function UserManagement() {
                 <td style={styles.td}>{new Date(u.created_at).toLocaleDateString()}</td>
                 <td style={styles.td}>
                   <button onClick={() => { setPwdModal({ id: u.id, name: u.name }); setNewPwd(''); setPwdMsg(''); setPwdErr(''); }} style={styles.pwdBtn}>
-                    🔑 Password
+                    <i className="fa-solid fa-key" style={{ marginRight: 5 }} />Password
                   </button>
-                  <button onClick={() => handleDelete(u.id, u.name)} style={styles.delBtn}>Delete</button>
+                  <button onClick={() => handleDelete(u.id, u.name)} style={styles.delBtn}>
+                    <i className="fa-solid fa-trash" style={{ marginRight: 5 }} />Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -125,7 +123,7 @@ export default function UserManagement() {
       {pwdModal && (
         <div style={styles.modalOverlay} onClick={() => setPwdModal(null)}>
           <div style={styles.modal} onClick={e => e.stopPropagation()}>
-            <h3 style={styles.modalTitle}>🔑 Reset Password</h3>
+            <h3 style={styles.modalTitle}><i className="fa-solid fa-key" style={{ marginRight: 8, color: colors.primary }} />Reset Password</h3>
             <p style={styles.modalSub}>Set a new password for <strong>{pwdModal.name}</strong></p>
             {pwdErr && <div style={styles.err}>{pwdErr}</div>}
             {pwdMsg && <div style={styles.success}>{pwdMsg}</div>}
@@ -150,10 +148,10 @@ export default function UserManagement() {
 
 const styles = {
   statsRow: { display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 24 },
-  statCard: { background: colors.surface, borderRadius: 10, padding: '16px 24px', boxShadow: shadows.panel, display: 'flex', alignItems: 'center', gap: 14, flex: '1 1 140px' },
+  statCard: { background: colors.surface, borderRadius: 10, padding: '20px 24px', boxShadow: shadows.panel, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', minWidth: 0 },
   statDot: { width: 12, height: 12, borderRadius: '50%', flexShrink: 0 },
-  statNum: { fontSize: 28, fontWeight: 700, color: colors.dark, lineHeight: 1 },
-  statLabel: { fontSize: 12, color: colors.muted, marginTop: 2 },
+  statNum: { fontSize: 32, fontWeight: 700, color: colors.dark, lineHeight: 1, marginBottom: 4 },
+  statLabel: { fontSize: 13, color: colors.muted },
   subtitle: { fontSize: 18, color: colors.dark, marginBottom: 0 },
   search: { padding: '9px 14px', border: `1px solid ${colors.border}`, borderRadius: 6, fontSize: 14, color: colors.dark, minWidth: 260 },
   table: { width: '100%', borderCollapse: 'collapse', background: colors.surface, borderRadius: 10, overflow: 'hidden', boxShadow: shadows.panel },
