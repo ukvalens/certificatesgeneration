@@ -35,13 +35,16 @@ export default function CertificateTypes() {
 
   return (
     <DashboardLayout title="Certificate Types">
-      <div className="responsive-form" style={styles.form}>
-        <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Type name *" style={styles.input} />
-        <select value={form.category_id} onChange={e => setForm({ ...form, category_id: e.target.value })} style={styles.input}>
-          <option value="">No Category</option>
-          {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-        </select>
-        <input value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Description" style={styles.input} />
+      <div style={styles.formCard}>
+        <h2 style={styles.formTitle}>Add Certificate Type</h2>
+        <div className="responsive-form" style={styles.form}>
+          <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Type name *" style={styles.input} />
+          <select value={form.category_id} onChange={e => setForm({ ...form, category_id: e.target.value })} style={styles.input}>
+            <option value="">— Select Category —</option>
+            {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+          </select>
+          <input value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Description (optional)" style={styles.input} />
+        </div>
         <button onClick={handleAdd} style={styles.btn}>Add Type</button>
       </div>
       <div className="table-responsive">
@@ -93,7 +96,9 @@ export default function CertificateTypes() {
 }
 
 const styles = {
-  form: { display: 'flex', gap: 12, marginBottom: 24 },
+  form: { gap: 12, marginBottom: 16 },
+  formCard: { background: colors.surface, borderRadius: 10, padding: 24, boxShadow: shadows.panel, marginBottom: 24 },
+  formTitle: { fontSize: 16, color: colors.dark, marginBottom: 16, fontWeight: 600 },
   input: { flex: 1, padding: '10px 14px', border: `1px solid ${colors.border}`, borderRadius: 6, fontSize: 14, color: colors.dark },
   inlineInput: { width: '100%', padding: '6px 10px', border: `1px solid ${colors.secondary}`, borderRadius: 4, fontSize: 13 },
   btn: { background: colors.primary, color: colors.surface, border: 'none', padding: '10px 20px', borderRadius: 6, cursor: 'pointer', fontSize: 14, whiteSpace: 'nowrap' },
