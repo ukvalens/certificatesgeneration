@@ -1,15 +1,22 @@
 import { useEffect, useState } from 'react';
-import { getCategories, createCategory, updateCategory, deleteCategory } from '../api';
+import { getCategories, createCategory, updateCategory, deleteCategory, getCertificateTypes } from '../api';
 import DashboardLayout from '../components/DashboardLayout';
 import { colors, shadows } from '../theme';
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
+  const [types, setTypes] = useState([]);
   const [name, setName] = useState('');
   const [editId, setEditId] = useState(null);
   const [editName, setEditName] = useState('');
 
-  const load = () => getCategories().then(r => setCategories(r.data));
+  const load = () => Promise.all([
+    getCategories(),
+    getCertificateTypes(),
+  ]).then(([cats, typs]) => {
+    setCategories(cats.data);
+    setTypes(typs.data);
+  });
 
   useEffect(() => { load(); }, []);
 
@@ -28,56 +35,91 @@ export default function Categories() {
     if (confirm('Delete this category?')) deleteCategory(id).then(load);
   };
 
+  const typesFor = (categoryId) => types.filter(t => t.category_id === categoryId);
+  const unassigned = types.filter(t => !t.category_id);
+
   return (
     <DashboardLayout title="Categories">
       <div className="responsive-form" style={styles.form}>
-        <input value={name} onChange={e => setName(e.target.value)} placeholder="Category name" style={styles.input} />
+        <input value={name} onChange={e => setName(e.target.value)} placeholder="Category name" style={styles.input} onKeyDown={e => e.key === 'Enter' && handleAdd()} />
         <button onClick={handleAdd} style={styles.btn}>Add Category</button>
       </div>
-      <div className="table-responsive">
-        <table style={styles.table}>
-        <thead>
-          <tr><th style={styles.th}>ID</th><th style={styles.th}>Name</th><th style={styles.th}>Actions</th></tr>
-        </thead>
-        <tbody>
-          {categories.map(c => editId === c.id ? (
-            <tr key={c.id} style={{ background: colors.light }}>
-              <td style={styles.td}>{c.id}</td>
-              <td style={styles.td}>
-                <input value={editName} onChange={e => setEditName(e.target.value)} style={styles.inlineInput} />
-              </td>
-              <td style={styles.td}>
-                <button onClick={() => handleEditSave(c.id)} style={styles.saveBtn}>Save</button>
-                <button onClick={() => setEditId(null)} style={styles.cancelBtn}>Cancel</button>
-              </td>
-            </tr>
-          ) : (
-            <tr key={c.id}>
-              <td style={styles.td}>{c.id}</td>
-              <td style={styles.td}>{c.name}</td>
-              <td style={styles.td}>
-                <button onClick={() => { setEditId(c.id); setEditName(c.name); }} style={styles.editBtn}>Edit</button>
-                <button onClick={() => handleDelete(c.id)} style={styles.delBtn}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+      <div style={styles.list}>
+        {categories.map(c => (
+          <div key={c.id} style={styles.card}>
+            <div style={styles.cardHeader}>
+              {editId === c.id ? (
+                <>
+                  <input value={editName} onChange={e => setEditName(e.target.value)} style={styles.inlineInput} autoFocus />
+                  <div style={styles.actions}>
+                    <button onClick={() => handleEditSave(c.id)} style={styles.saveBtn}>Save</button>
+                    <button onClick={() => setEditId(null)} style={styles.cancelBtn}>Cancel</button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <span style={styles.catName}>{c.name}</span>
+                    <span style={styles.countBadge}>{typesFor(c.id).length} type{typesFor(c.id).length !== 1 ? 's' : ''}</span>
+                  </div>
+                  <div style={styles.actions}>
+                    <button onClick={() => { setEditId(c.id); setEditName(c.name); }} style={styles.editBtn}>Edit</button>
+                    <button onClick={() => handleDelete(c.id)} style={styles.delBtn}>Delete</button>
+                  </div>
+                </>
+              )}
+            </div>
+            {typesFor(c.id).length > 0 && (
+              <div style={styles.typeList}>
+                {typesFor(c.id).map(t => (
+                  <span key={t.id} style={styles.typeTag}>{t.name}</span>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+
+        {unassigned.length > 0 && (
+          <div style={{ ...styles.card, borderLeft: `4px solid ${colors.muted}` }}>
+            <div style={styles.cardHeader}>
+              <div>
+                <span style={{ ...styles.catName, color: colors.muted }}>Uncategorized</span>
+                <span style={styles.countBadge}>{unassigned.length} type{unassigned.length !== 1 ? 's' : ''}</span>
+              </div>
+            </div>
+            <div style={styles.typeList}>
+              {unassigned.map(t => (
+                <span key={t.id} style={{ ...styles.typeTag, background: colors.light, color: colors.muted }}>{t.name}</span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {categories.length === 0 && (
+          <div style={styles.empty}>No categories yet. Add one above.</div>
+        )}
       </div>
     </DashboardLayout>
   );
 }
 
 const styles = {
-  form: { display: 'flex', gap: 12, marginBottom: 24 },
+  form: { display: 'flex', gap: 12, marginBottom: 28 },
   input: { flex: 1, padding: '10px 14px', border: `1px solid ${colors.border}`, borderRadius: 6, fontSize: 14, color: colors.dark },
-  inlineInput: { width: '100%', padding: '6px 10px', border: `1px solid ${colors.secondary}`, borderRadius: 4, fontSize: 13 },
-  btn: { background: colors.primary, color: colors.surface, border: 'none', padding: '10px 20px', borderRadius: 6, cursor: 'pointer', fontSize: 14 },
-  editBtn: { background: colors.secondary, color: colors.surface, border: 'none', padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 12, marginRight: 6 },
-  saveBtn: { background: colors.primary, color: colors.surface, border: 'none', padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 12, marginRight: 6 },
+  inlineInput: { flex: 1, padding: '7px 12px', border: `1px solid ${colors.primary}`, borderRadius: 6, fontSize: 14, color: colors.dark },
+  btn: { background: colors.primary, color: colors.surface, border: 'none', padding: '10px 20px', borderRadius: 6, cursor: 'pointer', fontSize: 14, whiteSpace: 'nowrap' },
+  list: { display: 'flex', flexDirection: 'column', gap: 16 },
+  card: { background: colors.surface, borderRadius: 10, boxShadow: shadows.panel, borderLeft: `4px solid ${colors.primary}`, overflow: 'hidden' },
+  cardHeader: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 20px', gap: 12, flexWrap: 'wrap' },
+  catName: { fontSize: 16, fontWeight: 600, color: colors.dark, marginRight: 10 },
+  countBadge: { background: colors.light, color: colors.primary, fontSize: 12, padding: '2px 10px', borderRadius: 20, fontWeight: 500 },
+  typeList: { display: 'flex', flexWrap: 'wrap', gap: 8, padding: '0 20px 16px' },
+  typeTag: { background: `${colors.primary}15`, color: colors.primary, fontSize: 13, padding: '4px 12px', borderRadius: 20, fontWeight: 500 },
+  actions: { display: 'flex', gap: 8 },
+  editBtn: { background: colors.secondary, color: colors.surface, border: 'none', padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 12 },
+  saveBtn: { background: colors.primary, color: colors.surface, border: 'none', padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 12 },
   cancelBtn: { background: colors.dark, color: colors.surface, border: 'none', padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 12 },
   delBtn: { background: colors.secondary, color: colors.surface, border: 'none', padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 12 },
-  table: { width: '100%', borderCollapse: 'collapse', background: colors.surface, borderRadius: 10, overflow: 'hidden', boxShadow: shadows.panel },
-  th: { background: colors.primary, color: colors.surface, padding: '10px 16px', textAlign: 'left', fontSize: 13 },
-  td: { padding: '10px 16px', borderBottom: `1px solid ${colors.light}`, fontSize: 14 },
+  empty: { color: colors.muted, textAlign: 'center', padding: 40, background: colors.surface, borderRadius: 10 },
 };
