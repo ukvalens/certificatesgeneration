@@ -6,14 +6,14 @@ import { colors, shadows } from '../theme';
 
 const PAGE_SIZE = 5;
 const ROLES = ['recipient', 'issuer', 'admin'];
-
-const roleBadgeColor = { admin: colors.secondary, issuer: colors.primary, recipient: '#6b7280' };
+const ROLE_COLORS = { admin: colors.secondary, issuer: colors.primary, recipient: colors.dark };
+const ROLE_ICONS = { admin: 'fa-user-shield', issuer: 'fa-user-pen', recipient: 'fa-user' };
 
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
-  const [pwdModal, setPwdModal] = useState(null); // { id, name }
+  const [pwdModal, setPwdModal] = useState(null);
   const [newPwd, setNewPwd] = useState('');
   const [pwdMsg, setPwdMsg] = useState('');
   const [pwdErr, setPwdErr] = useState('');
@@ -48,19 +48,27 @@ export default function UserManagement() {
   return (
     <DashboardLayout title="User Management">
 
-      {/* Stats row */}
-      <div className="card-grid" style={{ marginBottom: 24 }}>
+      {/* Stat cards — same pattern as Dashboard */}
+      <div className="card-grid" style={styles.cards}>
         {ROLES.map(r => (
-          <div key={r} className="stat-card" style={{ ...styles.statCard, borderTop: `4px solid ${roleBadgeColor[r]}` }}>
-            <i className={`fa-solid ${r === 'admin' ? 'fa-user-shield' : r === 'issuer' ? 'fa-user-pen' : 'fa-user'}`} style={{ fontSize: 24, color: roleBadgeColor[r], marginBottom: 8 }} />
-            <div style={styles.statNum}>{users.filter(u => u.role === r).length}</div>
-            <div style={styles.statLabel}>{r.charAt(0).toUpperCase() + r.slice(1)}s</div>
+          <div key={r} className="stat-card" style={{ ...styles.card, borderTop: `4px solid ${ROLE_COLORS[r]}` }}>
+            <div style={{ fontSize: 28, marginBottom: 8 }}>
+              <i className={`fa-solid ${ROLE_ICONS[r]}`} style={{ color: ROLE_COLORS[r] }} />
+            </div>
+            <div style={{ fontSize: 36, fontWeight: 'bold', color: ROLE_COLORS[r] }}>
+              {users.filter(u => u.role === r).length}
+            </div>
+            <div style={{ color: colors.muted, marginTop: 4, fontSize: 14 }}>
+              {r.charAt(0).toUpperCase() + r.slice(1)}s
+            </div>
           </div>
         ))}
-        <div className="stat-card" style={{ ...styles.statCard, borderTop: `4px solid #0f766e` }}>
-          <i className="fa-solid fa-users" style={{ fontSize: 24, color: '#0f766e', marginBottom: 8 }} />
-          <div style={styles.statNum}>{users.length}</div>
-          <div style={styles.statLabel}>Total Users</div>
+        <div className="stat-card" style={{ ...styles.card, borderTop: `4px solid #0f766e` }}>
+          <div style={{ fontSize: 28, marginBottom: 8 }}>
+            <i className="fa-solid fa-users" style={{ color: '#0f766e' }} />
+          </div>
+          <div style={{ fontSize: 36, fontWeight: 'bold', color: '#0f766e' }}>{users.length}</div>
+          <div style={{ color: colors.muted, marginTop: 4, fontSize: 14 }}>Total Users</div>
         </div>
       </div>
 
@@ -86,7 +94,7 @@ export default function UserManagement() {
               <tr key={u.id}>
                 <td style={styles.td}>
                   <div style={styles.nameCell}>
-                    <div style={{ ...styles.avatar, background: roleBadgeColor[u.role] }}>{u.name[0].toUpperCase()}</div>
+                    <div style={{ ...styles.avatar, background: ROLE_COLORS[u.role] }}>{u.name[0].toUpperCase()}</div>
                     <span>{u.name}</span>
                   </div>
                 </td>
@@ -95,7 +103,7 @@ export default function UserManagement() {
                   <select
                     value={u.role}
                     onChange={e => handleRoleChange(u.id, e.target.value)}
-                    style={{ ...styles.roleSelect, borderColor: roleBadgeColor[u.role], color: roleBadgeColor[u.role] }}
+                    style={{ ...styles.roleSelect, borderColor: ROLE_COLORS[u.role], color: ROLE_COLORS[u.role] }}
                   >
                     {ROLES.map(r => <option key={r} value={r}>{r.charAt(0).toUpperCase() + r.slice(1)}</option>)}
                   </select>
@@ -147,13 +155,10 @@ export default function UserManagement() {
 }
 
 const styles = {
-  statsRow: { display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 24 },
-  statCard: { background: colors.surface, borderRadius: 10, padding: '20px 24px', boxShadow: shadows.panel, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', minWidth: 0 },
-  statDot: { width: 12, height: 12, borderRadius: '50%', flexShrink: 0 },
-  statNum: { fontSize: 32, fontWeight: 700, color: colors.dark, lineHeight: 1, marginBottom: 4 },
-  statLabel: { fontSize: 13, color: colors.muted },
-  subtitle: { fontSize: 18, color: colors.dark, marginBottom: 0 },
-  search: { padding: '9px 14px', border: `1px solid ${colors.border}`, borderRadius: 6, fontSize: 14, color: colors.dark, minWidth: 260 },
+  cards: { display: 'flex', gap: 20, flexWrap: 'wrap', marginBottom: 32 },
+  card: { background: colors.surface, borderRadius: 10, padding: '24px 32px', boxShadow: shadows.panel, minWidth: 180 },
+  subtitle: { fontSize: 18, color: colors.dark, marginBottom: 12 },
+  search: { padding: '10px 14px', border: `1px solid ${colors.border}`, borderRadius: 6, fontSize: 14, color: colors.dark, minWidth: 260 },
   table: { width: '100%', borderCollapse: 'collapse', background: colors.surface, borderRadius: 10, overflow: 'hidden', boxShadow: shadows.panel },
   th: { background: colors.primary, color: colors.surface, padding: '10px 16px', textAlign: 'left', fontSize: 13 },
   td: { padding: '10px 16px', borderBottom: `1px solid ${colors.light}`, fontSize: 14, verticalAlign: 'middle' },
