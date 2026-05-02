@@ -18,7 +18,7 @@ import IssuerDashboard from './pages/IssuerDashboard';
 import RecipientDashboard from './pages/RecipientDashboard';
 import UserManagement from './pages/UserManagement';
 
-const dashboardPaths = ['/dashboard', '/certificates', '/certificate-types', '/categories'];
+const dashboardPaths = ['/dashboard', '/certificates', '/certificate-types', '/categories', '/users'];
 
 function DashboardRouter() {
   const { user, loading } = useAuth();
