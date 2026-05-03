@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { colors } from '../theme';
@@ -7,7 +6,6 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [menuOpen, setMenuOpen] = useState(false);
 
   const brand = <><i className="fa-solid fa-graduation-cap" style={{ marginRight: 8 }}></i>CertSystem</>;
 
@@ -36,26 +34,21 @@ export default function Navbar() {
     : user.role === 'issuer' ? issuerLinks
     : recipientLinks;
 
-  const handleLogout = () => { logout(); navigate('/'); setMenuOpen(false); };
-  const close = () => setMenuOpen(false);
+  const handleLogout = () => { logout(); navigate('/'); };
 
   return (
     <nav className="navbar" style={styles.nav}>
       <div style={styles.navTop}>
-        <Link to="/" style={styles.brand} onClick={close}>{brand}</Link>
+        <Link to="/" style={styles.brand}>{brand}</Link>
 
-        {/* Nav links — hidden on mobile behind hamburger */}
-        <div className={`nav-collapse${menuOpen ? ' open' : ''}`} style={styles.collapse}>
-          <div className="nav-links" style={styles.links}>
-            {links.map(l => (
-              <Link key={l.to} to={l.to} onClick={close} style={{ ...styles.link, ...(pathname === l.to ? styles.active : {}) }}>
-                <i className={`fa-solid ${l.icon}`} style={{ marginRight: 6 }}></i>{l.label}
-              </Link>
-            ))}
-          </div>
+        <div className="nav-links" style={styles.links}>
+          {links.map(l => (
+            <Link key={l.to} to={l.to} style={{ ...styles.link, ...(pathname === l.to ? styles.active : {}) }}>
+              <i className={`fa-solid ${l.icon}`} style={{ marginRight: 6 }}></i>{l.label}
+            </Link>
+          ))}
         </div>
 
-        {/* Auth — always visible top-right */}
         <div className="navbar-auth" style={styles.auth}>
           {user ? (
             <>
@@ -64,30 +57,24 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link to="/register" onClick={close} style={styles.registerBtn}>Register</Link>
-              <Link to="/login" onClick={close} style={styles.loginBtn}>Login</Link>
+              <Link to="/register" style={styles.registerBtn}>Register</Link>
+              <Link to="/login" style={styles.loginBtn}>Login</Link>
             </>
           )}
         </div>
-
-        <button className="nav-hamburger" style={styles.hamburger} onClick={() => setMenuOpen(o => !o)} aria-label="Toggle menu">
-          <i className={`fa-solid ${menuOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
-        </button>
       </div>
     </nav>
   );
 }
 
 const styles = {
-  nav: { background: colors.primary, padding: '0 24px', position: 'relative' },
-  navTop: { display: 'flex', alignItems: 'center', gap: 8, height: 60 },
+  nav: { background: colors.primary, padding: '0 16px' },
+  navTop: { display: 'flex', alignItems: 'center', gap: 4, minHeight: 60, flexWrap: 'wrap', padding: '8px 0' },
   brand: { color: colors.surface, fontWeight: 'bold', fontSize: 20, textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0, marginRight: 8 },
-  collapse: { flex: 1, display: 'flex', alignItems: 'center' },
-  auth: { display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto', flexShrink: 0 },
-  hamburger: { display: 'none', background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: colors.surface, borderRadius: 6, width: 38, height: 38, cursor: 'pointer', fontSize: 16, alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
-  links: { display: 'flex', gap: 4, flexWrap: 'wrap' },
+  links: { display: 'flex', gap: 4, flexWrap: 'wrap', flex: 1 },
   link: { color: 'rgba(255,255,255,0.8)', textDecoration: 'none', padding: '6px 12px', borderRadius: 6, fontSize: 14, whiteSpace: 'nowrap' },
   active: { background: colors.secondary, color: colors.surface },
+  auth: { display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, flexWrap: 'wrap' },
   registerBtn: { background: colors.secondary, color: '#fff', textDecoration: 'none', padding: '6px 14px', borderRadius: 6, fontSize: 14, fontWeight: 'bold', whiteSpace: 'nowrap' },
   loginBtn: { background: colors.surface, color: colors.primary, textDecoration: 'none', padding: '6px 14px', borderRadius: 6, fontSize: 14, fontWeight: 'bold', whiteSpace: 'nowrap' },
   logoutBtn: { background: colors.secondary, color: colors.surface, border: 'none', padding: '6px 14px', borderRadius: 6, cursor: 'pointer', fontSize: 13 },
