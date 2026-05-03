@@ -31,11 +31,11 @@ export default function Home() {
 
 const styles = {
   page: { background: colors.light },
-  section: { padding: '60px 32px', maxWidth: 1100, margin: '0 auto' },
-  sectionTitle: { fontSize: 26, color: colors.dark, textAlign: 'center', marginBottom: 40, fontWeight: 700 },
-  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 },
-  card: { background: colors.surface, borderRadius: 12, padding: 28, boxShadow: '0 2px 12px rgba(0,0,0,0.08)' },
+  section: { padding: 'clamp(28px, 5vw, 60px) clamp(12px, 3vw, 32px)', maxWidth: 1100, margin: '0 auto' },
+  sectionTitle: { fontSize: 'clamp(18px, 4vw, 26px)', color: colors.dark, textAlign: 'center', marginBottom: 40, fontWeight: 700 },
+  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: 20 },
+  card: { background: colors.surface, borderRadius: 12, padding: 'clamp(16px, 3vw, 28px)', boxShadow: '0 2px 12px rgba(0,0,0,0.08)' },
   cardIcon: { fontSize: 28, color: colors.primary, marginBottom: 14 },
-  cardTitle: { fontSize: 17, color: colors.dark, marginBottom: 8, fontWeight: 600 },
+  cardTitle: { fontSize: 'clamp(14px, 2.5vw, 17px)', color: colors.dark, marginBottom: 8, fontWeight: 600 },
   cardDesc: { color: colors.muted, fontSize: 14, lineHeight: 1.6 },
 };
