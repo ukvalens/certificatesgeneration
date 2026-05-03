@@ -63,8 +63,8 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link to="/login" onClick={close} style={styles.link}><i className="fa-solid fa-right-to-bracket" style={{ marginRight: 6 }}></i>Login</Link>
               <Link to="/register" onClick={close} style={styles.registerBtn}><i className="fa-solid fa-user-plus" style={{ marginRight: 6 }}></i>Register</Link>
+              <Link to="/login" onClick={close} style={styles.loginBtn}><i className="fa-solid fa-right-to-bracket" style={{ marginRight: 6 }}></i>Login</Link>
             </>
           )}
         </div>
@@ -82,7 +82,8 @@ const styles = {
   right: { display: 'flex', alignItems: 'center', gap: 10, marginLeft: 'auto', flexWrap: 'wrap' },
   link: { color: 'rgba(255,255,255,0.8)', textDecoration: 'none', padding: '6px 12px', borderRadius: 6, fontSize: 14, whiteSpace: 'nowrap' },
   active: { background: colors.secondary, color: colors.surface },
-  registerBtn: { background: colors.surface, color: colors.primary, textDecoration: 'none', padding: '6px 14px', borderRadius: 6, fontSize: 14, fontWeight: 'bold' },
+  registerBtn: { background: colors.secondary, color: '#fff', textDecoration: 'none', padding: '6px 14px', borderRadius: 6, fontSize: 14, fontWeight: 'bold', whiteSpace: 'nowrap' },
+  loginBtn: { background: colors.surface, color: colors.primary, textDecoration: 'none', padding: '6px 14px', borderRadius: 6, fontSize: 14, fontWeight: 'bold', whiteSpace: 'nowrap', border: `1px solid ${colors.primary}` },
   logoutBtn: { background: colors.secondary, color: colors.surface, border: 'none', padding: '6px 14px', borderRadius: 6, cursor: 'pointer', fontSize: 13 },
   userInfo: { color: 'rgba(255,255,255,0.85)', fontSize: 13, whiteSpace: 'nowrap' },
   roleBadge: { background: colors.secondary, color: colors.surface, padding: '2px 8px', borderRadius: 10, fontSize: 11, marginLeft: 4 },

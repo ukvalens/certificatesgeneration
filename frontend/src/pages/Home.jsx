@@ -17,19 +17,22 @@ export default function Home() {
       <div style={styles.hero}>
         <div style={styles.heroContent}>
           <i className="fa-solid fa-graduation-cap" style={styles.heroIcon}></i>
-          <h1 style={styles.heroTitle}>Certificate Generation System</h1>
-          <p style={styles.heroSub}>Issue, manage and verify professional certificates with ease.</p>
-          <div style={styles.heroBtns}>
+          <h1 className="hero-title" style={styles.heroTitle}>Certificate Generation System</h1>
+          <p className="hero-sub" style={styles.heroSub}>Issue, manage and verify professional certificates with ease.</p>
+          <div className="hero-btns" style={styles.heroBtns}>
+            <Link to="/register" style={styles.btnOutline}>
+              <i className="fa-solid fa-user-plus" style={{ marginRight: 8 }}></i>Get Started — Register
+            </Link>
             <Link to="/login" style={styles.btnPrimary}>
               <i className="fa-solid fa-right-to-bracket" style={{ marginRight: 8 }}></i>Sign In
-            </Link>
-            <Link to="/register" style={styles.btnOutline}>
-              <i className="fa-solid fa-user-plus" style={{ marginRight: 8 }}></i>Create Account
             </Link>
             <Link to="/verify" style={styles.btnGhost}>
               <i className="fa-solid fa-magnifying-glass" style={{ marginRight: 8 }}></i>Verify Certificate
             </Link>
           </div>
+          <p className="hero-hint" style={styles.heroHint}>
+            Already have an account? <Link to="/login" style={styles.heroHintLink}>Sign in here</Link>
+          </p>
         </div>
       </div>
 
@@ -63,8 +66,10 @@ const styles = {
   heroSub: { color: 'rgba(255,255,255,0.8)', fontSize: 16, marginBottom: 32, lineHeight: 1.6 },
   heroBtns: { display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' },
   btnPrimary: { background: colors.surface, color: colors.primary, padding: '12px 24px', borderRadius: 8, textDecoration: 'none', fontWeight: 700, fontSize: 15, display: 'inline-flex', alignItems: 'center' },
-  btnOutline: { background: colors.secondary, color: '#fff', padding: '12px 24px', borderRadius: 8, textDecoration: 'none', fontWeight: 700, fontSize: 15, display: 'inline-flex', alignItems: 'center' },
+  btnOutline: { background: colors.secondary, color: '#fff', padding: '12px 28px', borderRadius: 8, textDecoration: 'none', fontWeight: 700, fontSize: 15, display: 'inline-flex', alignItems: 'center', boxShadow: '0 2px 12px rgba(228,58,25,0.35)' },
   btnGhost: { background: 'rgba(255,255,255,0.15)', color: '#fff', padding: '12px 24px', borderRadius: 8, textDecoration: 'none', fontWeight: 600, fontSize: 15, display: 'inline-flex', alignItems: 'center', border: '1px solid rgba(255,255,255,0.3)' },
+  heroHint: { marginTop: 20, color: 'rgba(255,255,255,0.65)', fontSize: 13 },
+  heroHintLink: { color: '#fff', fontWeight: 600, textDecoration: 'underline' },
   section: { padding: '60px 32px', maxWidth: 1100, margin: '0 auto' },
   sectionTitle: { fontSize: 26, color: colors.dark, textAlign: 'center', marginBottom: 40, fontWeight: 700 },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 },
