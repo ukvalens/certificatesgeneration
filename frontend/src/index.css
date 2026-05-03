@@ -212,6 +212,11 @@ img {
   }
 }
 
+@media (max-width: 600px) {
+  .navbar { min-height: unset; }
+  .nav-links { padding: 2px 0 6px !important; }
+}
+
 /* ── Hero responsive ── */
 .hero-title { font-size: 36px; }
 .hero-sub { font-size: 16px; }
