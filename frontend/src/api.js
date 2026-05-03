@@ -35,3 +35,16 @@ export const updateCertificate = (id, data) => API.put(`/certificates/${id}`, da
 export const deleteCertificate = (id) => API.delete(`/certificates/${id}`);
 export const verifyCertificate = (code) => API.get(`/certificates/verify/${code}`);
 export const downloadCertificate = (id) => `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/certificates/${id}/download`;
+
+export const getCourses = () => API.get('/courses');
+export const getCourse = (id) => API.get(`/courses/${id}`);
+export const createCourse = (data) => API.post('/courses', data);
+export const updateCourse = (id, data) => API.put(`/courses/${id}`, data);
+export const deleteCourse = (id) => API.delete(`/courses/${id}`);
+export const createLesson = (courseId, data) => API.post(`/courses/${courseId}/lessons`, data);
+export const updateLesson = (courseId, lessonId, data) => API.put(`/courses/${courseId}/lessons/${lessonId}`, data);
+export const deleteLesson = (courseId, lessonId) => API.delete(`/courses/${courseId}/lessons/${lessonId}`);
+export const enrollCourse = (id) => API.post(`/courses/${id}/enroll`);
+export const getMyEnrollments = () => API.get('/courses/my-enrollments');
+export const completeLesson = (lessonId) => API.post(`/courses/lessons/${lessonId}/complete`);
+export const getLessonProgress = (courseId) => API.get(`/courses/${courseId}/progress`);

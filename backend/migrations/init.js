@@ -54,6 +54,47 @@ const createTables = async () => {
     ALTER TABLE certificates ADD COLUMN IF NOT EXISTS header_text TEXT;
   `);
 
+  // Courses system
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS courses (
+      id SERIAL PRIMARY KEY,
+      title VARCHAR(200) NOT NULL,
+      description TEXT,
+      category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL,
+      certificate_type_id INTEGER REFERENCES certificate_types(id) ON DELETE SET NULL,
+      created_at TIMESTAMP DEFAULT NOW()
+    );
+
+    CREATE TABLE IF NOT EXISTS course_lessons (
+      id SERIAL PRIMARY KEY,
+      course_id INTEGER REFERENCES courses(id) ON DELETE CASCADE,
+      title VARCHAR(200) NOT NULL,
+      lesson_type VARCHAR(20) NOT NULL CHECK (lesson_type IN ('video','reading','quiz')),
+      content TEXT,
+      video_url VARCHAR(500),
+      quiz_data JSONB,
+      position INTEGER DEFAULT 0,
+      created_at TIMESTAMP DEFAULT NOW()
+    );
+
+    CREATE TABLE IF NOT EXISTS course_enrollments (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+      course_id INTEGER REFERENCES courses(id) ON DELETE CASCADE,
+      enrolled_at TIMESTAMP DEFAULT NOW(),
+      completed_at TIMESTAMP,
+      UNIQUE(user_id, course_id)
+    );
+
+    CREATE TABLE IF NOT EXISTS lesson_progress (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+      lesson_id INTEGER REFERENCES course_lessons(id) ON DELETE CASCADE,
+      completed_at TIMESTAMP DEFAULT NOW(),
+      UNIQUE(user_id, lesson_id)
+    );
+  `);
+
   await pool.query(`
     DO $$ BEGIN
       IF NOT EXISTS (

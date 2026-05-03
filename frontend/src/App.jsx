@@ -17,8 +17,11 @@ import Verify from './pages/Verify';
 import IssuerDashboard from './pages/IssuerDashboard';
 import RecipientDashboard from './pages/RecipientDashboard';
 import UserManagement from './pages/UserManagement';
+import Courses from './pages/Courses';
+import CourseLearn from './pages/CourseLearn';
+import CourseManagement from './pages/CourseManagement';
 
-const dashboardPaths = ['/dashboard', '/certificates', '/certificate-types', '/categories', '/users'];
+const dashboardPaths = ['/dashboard', '/certificates', '/certificate-types', '/categories', '/users', '/course-management'];
 
 function DashboardRouter() {
   const { user, loading } = useAuth();
@@ -89,7 +92,10 @@ function Layout() {
           <Route path="/certificates" element={<ProtectedRoute roles={['admin']}><Certificates /></ProtectedRoute>} />
           <Route path="/certificate-types" element={<ProtectedRoute roles={['admin']}><CertificateTypes /></ProtectedRoute>} />
           <Route path="/categories" element={<ProtectedRoute roles={['admin']}><Categories /></ProtectedRoute>} />
+          <Route path="/courses" element={<Courses />} />
+          <Route path="/courses/:id/learn" element={<CourseLearn />} />
           <Route path="/users" element={<ProtectedRoute roles={['admin']}><UserManagement /></ProtectedRoute>} />
+          <Route path="/course-management" element={<ProtectedRoute roles={['admin']}><CourseManagement /></ProtectedRoute>} />
         </Routes>
       </div>
       {!hideGlobalLayout && <Footer />}

@@ -13,6 +13,7 @@ app.use('/api/categories', require('./routes/categories'));
 app.use('/api/certificate-types', require('./routes/certificateTypes'));
 app.use('/api/certificates', require('./routes/certificates'));
 app.use('/api/users', require('./routes/users'));
+app.use('/api/courses', require('./routes/courses'));
 
 app.get('/', (req, res) => {
   res.json({ message: 'Certificate System API' });

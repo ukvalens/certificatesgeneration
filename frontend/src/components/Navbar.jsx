@@ -14,6 +14,7 @@ export default function Navbar() {
     { to: '/certificates', label: 'Certificates', icon: 'fa-certificate' },
     { to: '/certificate-types', label: 'Types', icon: 'fa-list' },
     { to: '/categories', label: 'Categories', icon: 'fa-folder-tree' },
+    { to: '/course-management', label: 'Courses', icon: 'fa-book' },
     { to: '/verify', label: 'Verify', icon: 'fa-magnifying-glass' },
   ];
   const issuerLinks = [
@@ -22,10 +23,12 @@ export default function Navbar() {
   ];
   const recipientLinks = [
     { to: '/dashboard', label: 'My Certificates', icon: 'fa-medal' },
+    { to: '/courses', label: 'Courses', icon: 'fa-book' },
     { to: '/verify', label: 'Verify', icon: 'fa-magnifying-glass' },
   ];
   const publicLinks = [
     { to: '/', label: 'Home', icon: 'fa-house' },
+    { to: '/courses', label: 'Courses', icon: 'fa-book' },
     { to: '/verify', label: 'Verify', icon: 'fa-magnifying-glass' },
   ];
 
