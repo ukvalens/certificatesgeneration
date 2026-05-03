@@ -43,31 +43,36 @@ export default function Navbar() {
     <nav className="navbar" style={styles.nav}>
       <div style={styles.navTop}>
         <Link to="/" style={styles.brand} onClick={close}>{brand}</Link>
-        <button className="nav-hamburger" style={styles.hamburger} onClick={() => setMenuOpen(o => !o)} aria-label="Toggle menu">
-          <i className={`fa-solid ${menuOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
-        </button>
-      </div>
-      <div className={`nav-collapse${menuOpen ? ' open' : ''}`}>
-        <div className="nav-links" style={styles.links}>
-          {links.map(l => (
-            <Link key={l.to} to={l.to} onClick={close} style={{ ...styles.link, ...(pathname === l.to ? styles.active : {}) }}>
-              <i className={`fa-solid ${l.icon}`} style={{ marginRight: 6 }}></i>{l.label}
-            </Link>
-          ))}
+
+        {/* Nav links — hidden on mobile behind hamburger */}
+        <div className={`nav-collapse${menuOpen ? ' open' : ''}`} style={styles.collapse}>
+          <div className="nav-links" style={styles.links}>
+            {links.map(l => (
+              <Link key={l.to} to={l.to} onClick={close} style={{ ...styles.link, ...(pathname === l.to ? styles.active : {}) }}>
+                <i className={`fa-solid ${l.icon}`} style={{ marginRight: 6 }}></i>{l.label}
+              </Link>
+            ))}
+          </div>
         </div>
-        <div className="navbar-right" style={styles.right}>
+
+        {/* Auth — always visible top-right */}
+        <div className="navbar-auth" style={styles.auth}>
           {user ? (
             <>
-              <span style={styles.userInfo}>{user.name} <span style={styles.roleBadge}>{user.role}</span></span>
-              <button onClick={handleLogout} style={styles.logoutBtn}><i className="fa-solid fa-right-from-bracket" style={{ marginRight: 6 }}></i>Logout</button>
+              <span className="nav-user-info" style={styles.userInfo}>{user.name} <span style={styles.roleBadge}>{user.role}</span></span>
+              <button onClick={handleLogout} style={styles.logoutBtn}><i className="fa-solid fa-right-from-bracket" style={{ marginRight: 6 }}></i><span className="login-label">Logout</span></button>
             </>
           ) : (
             <>
-              <Link to="/register" onClick={close} style={styles.registerBtn}><i className="fa-solid fa-user-plus" style={{ marginRight: 6 }}></i>Register</Link>
-              <Link to="/login" onClick={close} style={styles.loginBtn}><i className="fa-solid fa-right-to-bracket" style={{ marginRight: 6 }}></i>Login</Link>
+              <Link to="/register" onClick={close} style={styles.registerBtn}><i className="fa-solid fa-user-plus" style={{ marginRight: 6 }}></i><span className="register-label">Register</span></Link>
+              <Link to="/login" onClick={close} style={styles.loginBtn}><i className="fa-solid fa-right-to-bracket" style={{ marginRight: 6 }}></i><span className="login-label">Login</span></Link>
             </>
           )}
         </div>
+
+        <button className="nav-hamburger" style={styles.hamburger} onClick={() => setMenuOpen(o => !o)} aria-label="Toggle menu">
+          <i className={`fa-solid ${menuOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
+        </button>
       </div>
     </nav>
   );
@@ -75,15 +80,16 @@ export default function Navbar() {
 
 const styles = {
   nav: { background: colors.primary, padding: '0 24px', position: 'relative' },
-  navTop: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 60 },
-  brand: { color: colors.surface, fontWeight: 'bold', fontSize: 20, textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 },
-  hamburger: { display: 'none', background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: colors.surface, borderRadius: 6, width: 38, height: 38, cursor: 'pointer', fontSize: 16, alignItems: 'center', justifyContent: 'center' },
+  navTop: { display: 'flex', alignItems: 'center', gap: 8, height: 60 },
+  brand: { color: colors.surface, fontWeight: 'bold', fontSize: 20, textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0, marginRight: 8 },
+  collapse: { flex: 1, display: 'flex', alignItems: 'center' },
+  auth: { display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto', flexShrink: 0 },
+  hamburger: { display: 'none', background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: colors.surface, borderRadius: 6, width: 38, height: 38, cursor: 'pointer', fontSize: 16, alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
   links: { display: 'flex', gap: 4, flexWrap: 'wrap' },
-  right: { display: 'flex', alignItems: 'center', gap: 10, marginLeft: 'auto', flexWrap: 'wrap' },
   link: { color: 'rgba(255,255,255,0.8)', textDecoration: 'none', padding: '6px 12px', borderRadius: 6, fontSize: 14, whiteSpace: 'nowrap' },
   active: { background: colors.secondary, color: colors.surface },
   registerBtn: { background: colors.secondary, color: '#fff', textDecoration: 'none', padding: '6px 14px', borderRadius: 6, fontSize: 14, fontWeight: 'bold', whiteSpace: 'nowrap' },
-  loginBtn: { background: colors.surface, color: colors.primary, textDecoration: 'none', padding: '6px 14px', borderRadius: 6, fontSize: 14, fontWeight: 'bold', whiteSpace: 'nowrap', border: `1px solid ${colors.primary}` },
+  loginBtn: { background: colors.surface, color: colors.primary, textDecoration: 'none', padding: '6px 14px', borderRadius: 6, fontSize: 14, fontWeight: 'bold', whiteSpace: 'nowrap' },
   logoutBtn: { background: colors.secondary, color: colors.surface, border: 'none', padding: '6px 14px', borderRadius: 6, cursor: 'pointer', fontSize: 13 },
   userInfo: { color: 'rgba(255,255,255,0.85)', fontSize: 13, whiteSpace: 'nowrap' },
   roleBadge: { background: colors.secondary, color: colors.surface, padding: '2px 8px', borderRadius: 10, fontSize: 11, marginLeft: 4 },

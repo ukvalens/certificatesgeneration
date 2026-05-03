@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <div style={styles.page}>
       {/* Hero */}
-      <div style={styles.hero}>
+      <div className="hero-section" style={styles.hero}>
         <div style={styles.heroContent}>
           <i className="fa-solid fa-graduation-cap" style={styles.heroIcon}></i>
           <h1 className="hero-title" style={styles.heroTitle}>Certificate Generation System</h1>
