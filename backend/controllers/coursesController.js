@@ -105,7 +105,7 @@ const enroll = async (req, res) => {
 const getMyEnrollments = async (req, res) => {
   const user_id = req.user.id;
   const result = await pool.query(`
-    SELECT e.*, c.title, c.description, cat.name AS category_name,
+    SELECT e.*, c.title, c.description, c.certificate_type_id, cat.name AS category_name,
       (SELECT COUNT(*) FROM course_lessons WHERE course_id = c.id) AS total_lessons,
       (SELECT COUNT(*) FROM lesson_progress lp
         JOIN course_lessons cl ON lp.lesson_id = cl.id

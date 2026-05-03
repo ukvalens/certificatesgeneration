@@ -85,22 +85,40 @@ export default function RecipientDashboard() {
           <>
             <input value={search} onChange={e => handleSearch(e.target.value)} placeholder="Search certificates..." style={styles.search} />
             <div className="card-grid" style={styles.grid}>
-              {paginated.map(c => (
-                <div key={c.id} style={styles.card}>
-                  <div style={styles.cardIcon}>🎓</div>
-                  <h3 style={styles.cardType}>{c.certificate_type}</h3>
-                  {c.category && <div style={styles.courseBadge}>{c.category}</div>}
-                  <div style={styles.info}>
-                    <div><span style={styles.label}>Issued to:</span> {c.user_name}</div>
-                    <div><span style={styles.label}>Date:</span> {new Date(c.issue_date).toLocaleDateString()}</div>
-                    <div><span style={styles.label}>Code:</span> <code style={styles.code}>{c.certificate_code}</code></div>
+              {paginated.map(c => {
+                const linkedEnrollment = enrollments.find(e => e.certificate_type_id === c.certificate_type_id);
+                return (
+                  <div key={c.id} style={styles.card}>
+                    <div style={styles.cardIcon}>🎓</div>
+                    <h3 style={styles.cardType}>{c.certificate_type}</h3>
+                    {c.category && <div style={styles.courseBadge}>{c.category}</div>}
+                    <div style={styles.info}>
+                      <div><span style={styles.label}>Issued to:</span> {c.user_name}</div>
+                      <div><span style={styles.label}>Date:</span> {new Date(c.issue_date).toLocaleDateString()}</div>
+                      <div><span style={styles.label}>Code:</span> <code style={styles.code}>{c.certificate_code}</code></div>
+                    </div>
+
+                    {/* Linked course content */}
+                    {linkedEnrollment && (
+                      <div style={styles.linkedCourse}>
+                        <div style={styles.linkedCourseTitle}>📚 {linkedEnrollment.title}</div>
+                        <div style={styles.progressWrap}>
+                          <div style={styles.progressBar}>
+                            <div style={{ ...styles.progressFill, width: '100%' }} />
+                          </div>
+                          <span style={styles.progressLabel}>{linkedEnrollment.completed_lessons}/{linkedEnrollment.total_lessons} lessons completed</span>
+                        </div>
+                        <Link to={`/courses/${linkedEnrollment.course_id}/learn`} style={styles.reviewLink}>Review Course Content →</Link>
+                      </div>
+                    )}
+
+                    <div style={styles.actions}>
+                      <a href={downloadCertificate(c.id)} target="_blank" rel="noreferrer" style={styles.dlBtn}>📄 Download PDF</a>
+                      <Link to={`/verify/${c.certificate_code}`} style={styles.verifyLink}>🔍 Verify</Link>
+                    </div>
                   </div>
-                  <div style={styles.actions}>
-                    <a href={downloadCertificate(c.id)} target="_blank" rel="noreferrer" style={styles.dlBtn}>📄 Download PDF</a>
-                    <Link to={`/verify/${c.certificate_code}`} style={styles.verifyLink}>🔍 Verify</Link>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <Pagination page={page} totalPages={totalPages} onChange={setPage} />
           </>
@@ -133,4 +151,7 @@ const styles = {
   actions: { display: 'flex', gap: 10, flexWrap: 'wrap' },
   dlBtn: { background: colors.secondary, color: colors.surface, padding: '8px 14px', borderRadius: 6, textDecoration: 'none', fontSize: 13, textAlign: 'center' },
   verifyLink: { background: colors.light, color: colors.dark, padding: '8px 14px', borderRadius: 6, textDecoration: 'none', fontSize: 13 },
+  linkedCourse: { background: colors.light, borderRadius: 8, padding: '10px 14px', display: 'flex', flexDirection: 'column', gap: 6 },
+  linkedCourseTitle: { fontSize: 13, fontWeight: 600, color: colors.dark },
+  reviewLink: { fontSize: 12, color: colors.primary, textDecoration: 'none', fontWeight: 600 },
 };
