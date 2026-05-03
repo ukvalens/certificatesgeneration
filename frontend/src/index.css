@@ -60,9 +60,6 @@ img {
 .nav-links {
   display: flex;
   gap: 4px;
-  flex-wrap: wrap;
-  flex: 1;
-  min-width: 0;
 }
 
 .dashboard-topbar {

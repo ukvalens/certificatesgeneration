@@ -69,12 +69,12 @@ export default function Navbar() {
 
 const styles = {
   nav: { background: colors.primary, padding: '0 16px' },
-  navTop: { display: 'flex', alignItems: 'center', gap: 4, minHeight: 60, flexWrap: 'wrap', padding: '8px 0' },
-  brand: { color: colors.surface, fontWeight: 'bold', fontSize: 20, textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0, marginRight: 8 },
-  links: { display: 'flex', gap: 4, flexWrap: 'wrap' },
+  navTop: { display: 'flex', alignItems: 'center', height: 60 },
+  brand: { color: colors.surface, fontWeight: 'bold', fontSize: 20, textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0, marginRight: 16 },
+  links: { display: 'flex', gap: 4 },
   link: { color: 'rgba(255,255,255,0.8)', textDecoration: 'none', padding: '6px 12px', borderRadius: 6, fontSize: 14, whiteSpace: 'nowrap' },
   active: { background: colors.secondary, color: colors.surface },
-  auth: { display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, flexWrap: 'wrap', marginLeft: 'auto' },
+  auth: { display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto', flexShrink: 0 },
   registerBtn: { background: colors.secondary, color: '#fff', textDecoration: 'none', padding: '6px 14px', borderRadius: 6, fontSize: 14, fontWeight: 'bold', whiteSpace: 'nowrap' },
   loginBtn: { background: colors.surface, color: colors.primary, textDecoration: 'none', padding: '6px 14px', borderRadius: 6, fontSize: 14, fontWeight: 'bold', whiteSpace: 'nowrap' },
   logoutBtn: { background: colors.secondary, color: colors.surface, border: 'none', padding: '6px 14px', borderRadius: 6, cursor: 'pointer', fontSize: 13 },
