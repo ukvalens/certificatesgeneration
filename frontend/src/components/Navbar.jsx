@@ -69,12 +69,12 @@ export default function Navbar() {
 
 const styles = {
   nav: { background: colors.primary, padding: '0 16px' },
-  navTop: { display: 'flex', alignItems: 'center', height: 60 },
+  navTop: { display: 'flex', alignItems: 'center', flexWrap: 'wrap', minHeight: 60, padding: '0' },
   brand: { color: colors.surface, fontWeight: 'bold', fontSize: 20, textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0, marginRight: 16 },
-  links: { display: 'flex', gap: 4 },
+  links: { display: 'flex', gap: 4, order: 3, width: '100%', paddingBottom: 8 },
   link: { color: 'rgba(255,255,255,0.8)', textDecoration: 'none', padding: '6px 12px', borderRadius: 6, fontSize: 14, whiteSpace: 'nowrap' },
   active: { background: colors.secondary, color: colors.surface },
-  auth: { display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto', flexShrink: 0 },
+  auth: { display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto', flexShrink: 0, order: 2 },
   registerBtn: { background: colors.secondary, color: '#fff', textDecoration: 'none', padding: '6px 14px', borderRadius: 6, fontSize: 14, fontWeight: 'bold', whiteSpace: 'nowrap' },
   loginBtn: { background: colors.surface, color: colors.primary, textDecoration: 'none', padding: '6px 14px', borderRadius: 6, fontSize: 14, fontWeight: 'bold', whiteSpace: 'nowrap' },
   logoutBtn: { background: colors.secondary, color: colors.surface, border: 'none', padding: '6px 14px', borderRadius: 6, cursor: 'pointer', fontSize: 13 },

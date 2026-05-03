@@ -53,10 +53,6 @@ img {
   height: auto;
 }
 
-.navbar {
-  min-height: 60px;
-}
-
 .nav-links {
   display: flex;
   gap: 4px;
@@ -198,6 +194,22 @@ img {
 .verify-form input {
   min-width: 0;
   flex: 1;
+}
+
+/* ── Navbar ── */
+.navbar { min-height: 60px; }
+
+/* Desktop: links inline between brand and auth */
+@media (min-width: 601px) {
+  .nav-links {
+    order: 2 !important;
+    width: auto !important;
+    padding-bottom: 0 !important;
+    flex: 1;
+  }
+  .navbar-auth {
+    order: 3 !important;
+  }
 }
 
 /* ── Hero responsive ── */
