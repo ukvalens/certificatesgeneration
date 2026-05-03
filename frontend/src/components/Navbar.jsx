@@ -60,12 +60,12 @@ export default function Navbar() {
           {user ? (
             <>
               <span className="nav-user-info" style={styles.userInfo}>{user.name} <span style={styles.roleBadge}>{user.role}</span></span>
-              <button onClick={handleLogout} style={styles.logoutBtn}><i className="fa-solid fa-right-from-bracket" style={{ marginRight: 6 }}></i><span className="login-label">Logout</span></button>
+              <button onClick={handleLogout} style={styles.logoutBtn}>Logout</button>
             </>
           ) : (
             <>
-              <Link to="/register" onClick={close} style={styles.registerBtn}><i className="fa-solid fa-user-plus" style={{ marginRight: 6 }}></i><span className="register-label">Register</span></Link>
-              <Link to="/login" onClick={close} style={styles.loginBtn}><i className="fa-solid fa-right-to-bracket" style={{ marginRight: 6 }}></i><span className="login-label">Login</span></Link>
+              <Link to="/register" onClick={close} style={styles.registerBtn}>Register</Link>
+              <Link to="/login" onClick={close} style={styles.loginBtn}>Login</Link>
             </>
           )}
         </div>
